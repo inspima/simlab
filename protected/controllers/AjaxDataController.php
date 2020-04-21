@@ -159,7 +159,7 @@ class AjaxDataController extends Controller
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
             order by id_pasien desc,p.nama
-            limit 0,6000
+            limit 0,3000
             ";
         $data_pasien_all = Yii::app()->db->createCommand($query_view_pasien)->queryAll();
         // TAMPIL DATA HTML
