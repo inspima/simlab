@@ -1,0 +1,24 @@
+RewriteEngine on
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# allow IP range by address truncation
+#<Limit GET POST>
+# order deny,allow
+# deny from all
+# allow from 114.79.29.35
+# allow from 210.57.214.26
+# allow from 210.57.219.130
+# allow from 210.57.215.194
+# allow from 210.57.215.206
+# allow from 210.57.215.198
+# allow from 36.74.3.23
+# 
+#</Limit>
+
+# otherwise forward it to index.php
+RewriteRule . index.php
+
+                            
