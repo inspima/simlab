@@ -1246,6 +1246,7 @@ include 'breadcumbs.php';
                                         <a class="btn" href="<?php echo Yii::app()->createUrl('registrasi/cetak/nota?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Nota" id="" ><i class="icon-print"></i> Cetak Nota</a>
                                         <a class="btn" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id=""><i class="icon-print"></i> Cetak Hasil Pemeriksaan</a>
                                         <a class="btn" href="<?php echo Yii::app()->createUrl('registrasi/cetak/sertifikat_pengujian?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id=""><i class="icon-print"></i> Cetak Sertifikat Pengujian</a>
+                                        <a class="btn" href="<?php echo Yii::app()->createUrl('registrasi/cetak/barcode?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Barcode Pemeriksaan" id=""><i class="icon-barcode"></i> Cetak Barcode</a>
                                     </div>
                                 </div>
                             </div>
