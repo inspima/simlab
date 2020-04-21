@@ -13,31 +13,14 @@ hr.new5 {
   border-radius: 5px;
 }
 </style>
+ <img height="203" width="797" src="<?php echo Yii::app()->createUrl('img/header.png'); ?>"/>
 <div class="container" >
-    <div class="row-fluid" style="display: table">
-        <div class="col-xs-2">
-            <img height="85" width="85" src="<?php echo Yii::app()->createUrl('img/logo_unair.gif'); ?>"/>
+        <div class="">
+           
         </div>
-        <div class="col-xs-10">
-            <div style="text-align: center" class="">
-                <h4>TROPICAL DISEASE DIAGNOSTIC CENTER (TDDC)</h4>
-                <h5><i>Laboratorium Canggih untuk Diagnosis yag Berkualitas dan Terpercaya</i></h5>
-                <h5>Ijin Laboratorium Klinik : No. 503.445/8618/045-LAB/435.5.5/VII/2008</h5>
-
-                <address style="margin: 4px 0px" class="align-left">
-                    Lembaga Penyakit Tropis <br/>
-                    Universitas Airlangga<br/>
-                    Ex.Tropical Disease Center (TDC), Kampus C Unair, Jl.Mulyorejo Surabaya -60115<br/>
-                    Telp. (031) 5992445-46, Fax. (031) 5992445 <br/>
-                    Email : <span style="text-decoration: underline">sekretariat@itd.unair.ac.id</span> Website: <span style="text-decoration: underline">www.itd.unair.ac.id</span> <br/>
-                </address>
-            </div>
-        </div>
-    </div>
-    <hr class="new5">
     <div class="row-fluid" style="margin: 10px 0px;">
         <div style="width:200px;position: absolute;top: 10px;right: 0px;text-align: right">
-            <h4 style="font-size: 0.9em">F.05.10.01 Rev.0</h4>
+            <!--<h4 style="font-size: 0.9em">F.05.10.01 Rev.0</h4>-->
         </div>
     </div>
     <h4 style="margin: 20px 0px;text-align: center">HASIL PEMERIKSAAN LABORATORIUM</h4>
@@ -193,7 +176,7 @@ hr.new5 {
                                 Surabaya <?php echo $this->getDateIndo(date('Y-m-d')) ?><br/>
                                 <b>Manajer Teknis </b>
                                 <br/>
-                                <?php if($status_validasi == 1) { ?>
+                                <?php if($status_validasi == 0) { ?>
                                 <img height="147" width="274" src="<?php echo Yii::app()->createUrl('img/tddc-nrt.png'); ?>"/>
                                 <?php } ?>
                                 <br/>
