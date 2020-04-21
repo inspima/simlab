@@ -12,8 +12,11 @@ hr.new5 {
   border: 3px solid black;
   border-radius: 5px;
 }
+body {
+  background-image: url(<?php echo Yii::app()->createUrl('img/logo_unair.gif'); ?>);
+}
 </style>
- <img height="203" width="797" src="<?php echo Yii::app()->createUrl('img/header.png'); ?>"/>
+<center><img height="203" width="797" src="<?php echo Yii::app()->createUrl('img/header.png'); ?>"/></center>
 <div class="container" >
         <div class="">
            

@@ -483,7 +483,7 @@ class CetakController extends Controller
         Yii::import("application.extensions.barcode.*");
         $id_registrasi = Yii::app()->request->getParam('reg');
         $data_registrasi = $this->getDataRegistrasiPemeriksaan($id_registrasi);
-        $no_registrasi = str_replace("-", "", $data_registrasi['no_registrasi']);
+        $no_registrasi = $data_registrasi['no_registrasi'];
         $width  = 460;
         //Height of the barcode image.
         $height = 54;
