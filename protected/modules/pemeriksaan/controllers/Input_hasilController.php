@@ -1,11 +1,13 @@
 <?php
 
-class Input_hasilController extends Controller {
+class Input_hasilController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -16,19 +18,23 @@ class Input_hasilController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('read', 'input'),
+            array(
+                'allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('read','readDataAjax', 'input'),
                 'users' => array('@'),
             ),
-            array('deny', // deny all users
+            array(
+                'deny', // deny all users
                 'users' => array('*'),
             ),
         );
     }
 
-    private function getPasienPemeriksan($id_registrasi) {
+    private function getPasienPemeriksan($id_registrasi)
+    {
         $id_user = Yii::app()->user->getId();
         $id_unit_user = Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
         $q_unit_user = $id_unit_user == '' ? "" : " and p.id_unit='{$id_unit_user}'";
@@ -75,13 +81,31 @@ class Input_hasilController extends Controller {
         return $result;
     }
 
-    public function actionRead() {
+    public function actionRead()
+    {
         $data = array();
         $id_user = Yii::app()->user->getId();
         $id_unit = Yii::app()->request->getParam('unit');
         $id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
-        if (!empty($id_unit_user)) {
-            $query_view = "
+        
+        $this->render('read', array(
+            'id_unit' => $id_unit_user,
+            'id_unit_user' => Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar(),
+            'data_unit' => Unit::model()->findAll(),
+        ));
+    }
+
+    public function actionReadDataAjax()
+    {
+        $id_user_login = Yii::app()->user->getId();
+        $id_unit = Yii::app()->request->getParam('id_unit');
+        $id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user_login}'")->queryScalar();
+        $start = Yii::app()->request->getParam('start');
+        $length = Yii::app()->request->getParam('length');
+        $draw = Yii::app()->request->getParam('draw');
+        $search_arr = Yii::app()->request->getParam('search');
+        $search = $search_arr['value'];
+        $query_view = "
             select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
@@ -90,20 +114,73 @@ class Input_hasilController extends Controller {
             join pasien_pemeriksaan pp on pp.id_registrasi_pemeriksaan=r.id_registrasi_pemeriksaan
             join pengujian peng on peng.id_pengujian=pp.id_pengujian and peng.id_unit='{$id_unit_user}'
             left join instansi i on i.id_instansi=r.id_instansi
+            where lower(r.no_registrasi) like lower('%{$search}%') 
+            or lower(r.waktu_registrasi) like lower('%{$search}%')
+            or lower(p.nama)  like lower('%{$search}%')
+            or lower(i.nama_instansi)  like lower('%{$search}%')
+            or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
+            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,id_registrasi_pemeriksaan
+            order by r.waktu_registrasi desc
+            limit {$start},{$length}
+            ";
+
+        $query_view_search = "
+            select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi
+            from pasien p
+            left join kota k on k.id_kota=p.id_kota_lahir
+            left join agama ag on ag.id_agama=p.id_agama
+            join registrasi_pemeriksaan r on p.id_pasien=r.id_pasien
+            join pasien_pemeriksaan pp on pp.id_registrasi_pemeriksaan=r.id_registrasi_pemeriksaan
+            join pengujian peng on peng.id_pengujian=pp.id_pengujian and peng.id_unit='{$id_unit_user}'
+            left join instansi i on i.id_instansi=r.id_instansi
+            where lower(r.no_registrasi) like lower('%{$search}%') 
+            or lower(r.waktu_registrasi) like lower('%{$search}%')
+            or lower(p.nama)  like lower('%{$search}%')
+            or lower(i.nama_instansi)  like lower('%{$search}%')
+            or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
             group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,id_registrasi_pemeriksaan
             order by r.waktu_registrasi desc
             ";
-            $data = Yii::app()->db->createCommand($query_view)->queryAll();
+        $data = Yii::app()->db->createCommand($query_view)->queryAll();
+
+        $data_search = Yii::app()->db->createCommand($query_view_search)->queryAll();
+        $jumlah_all = count($data);
+        $jumlah_filtered = count($data_search);
+        $no = 1;
+        $result = array();
+        foreach ($data as $d) {
+            $status_registrasi = '';
+            $status_pembayaran = '';
+            if ($d['status_registrasi'] == 0) {
+                $status_registrasi = '<span class="btn btn-info">Baru</span>';
+            } else if ($d['status_registrasi'] == 1) {
+                $status_registrasi = '<span class="btn btn-warning">Proses Pengujian</span>';
+            } else if ($d['status_registrasi'] == 2) {
+                $status_registrasi = '<span class="btn btn-success">Sudah Selesai</span>';
+            }
+            if ($d['status_pembayaran'] == 0) {
+                $status_pembayaran = '<span class="btn btn-danger">Belum Ada Pembayaran</span>';
+            } else if ($d['status_pembayaran'] == 1) {
+                $status_pembayaran = '<span class="btn btn-success">Lunas</span>';
+            }
+            $action = '<a class="btn" title="Lihat Sample" href="' . Yii::app()->createUrl('pemeriksaan/input_hasil/input?reg=' . $d['id_registrasi_pemeriksaan']) . '" ><i class=" icon-list-alt"></i></a>';
+
+            array_push($result, array(
+                $d['no_registrasi'],
+                $d['waktu_registrasi'],
+                $d['nama'] . '<br/><b>Instansi: </b>' . $d['nama_instansi'],
+                $d['keluhan_diagnosa'],
+                $status_registrasi,
+                $status_pembayaran,
+                $action
+            ));
         }
-        $this->render('read', array(
-            'id_unit' => $id_unit_user,
-            'id_unit_user' => Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar(),
-            'data_unit' => Unit::model()->findAll(),
-            'data_pasien' => $data
-        ));
+        echo json_encode(array('draw' => $draw, 'recordsTotal' => $jumlah_all, 'recordsFiltered' => $jumlah_filtered, 'data' => $result));
     }
 
-    public function actionInput() {
+
+    public function actionInput()
+    {
         $id_registrasi = Yii::app()->request->getParam('reg');
         $id_user_login = Yii::app()->user->getId();
         if (!empty($_POST)) {
@@ -169,7 +246,7 @@ class Input_hasilController extends Controller {
                     }
                 }
 
-                iF (!empty($hasil_pengujian)) {
+                if (!empty($hasil_pengujian)) {
                     $jumlah_isi++;
                 }
                 $sukses_input++;
@@ -200,5 +277,4 @@ class Input_hasilController extends Controller {
             'data_pasien_pemeriksaan' => $data_pasien_pemeriksaan
         ));
     }
-
 }

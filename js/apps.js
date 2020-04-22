@@ -84,7 +84,7 @@ $(function() {
                 }
             }
         });
-    }, 3000);
+    }, 8000);
     /*
     setInterval(function() {
         $.ajax({
