@@ -12,7 +12,7 @@ hr.new5 {
   border: 3px solid black;
   border-radius: 5px;
 }
-body {
+container {
   background-image: url(<?php echo Yii::app()->createUrl('img/logo_unair.gif'); ?>);
 }
 </style>
@@ -179,7 +179,7 @@ body {
                                 Surabaya <?php echo $this->getDateIndo(date('Y-m-d')) ?><br/>
                                 <b>Manajer Teknis </b>
                                 <br/>
-                                <?php if($status_validasi == 0) { ?>
+                                <?php if($status_validasi == 1) { ?>
                                 <img height="147" width="274" src="<?php echo Yii::app()->createUrl('img/tddc-nrt.png'); ?>"/>
                                 <?php } ?>
                                 <br/>

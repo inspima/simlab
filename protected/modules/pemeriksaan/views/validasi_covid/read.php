@@ -12,10 +12,18 @@ include 'breadcumbs.php';
                 <h2>Data Registrasi Pemeriksaan Pasien TDDC</h2>
                 <form style="margin: 20px" class="form-inline" role="form">
                     <div class="control-group-group">
-                         <input type="date" class="span2 datepicker validate[required]" name="tgl" value="<?php if($tgl == null) {echo date('Y-m-d');} else {echo $tgl;}?>">
-                        <label class="sr-only" for="unit">Pilih Tgl</label>
+                        <label class="sr-only" for="unit">Pilih Tgl Pengujian : </label>
+                        <input type="date" class="span2 datepicker validate[required]" name="tgl" value="<?php if($tgl == null) {echo date('Y-m-d');} else {echo $tgl;}?>">
+                        
+                    </div>   
+                    <p>&nbsp;</p>
+                    <div class="control-group-group">
+                        <label class="sr-only" for="unit">Atau Cari berdasarkan Nama : </label>
+                         <input type="nama" class="" name="nama" value="">
+                   
+                    </div>   
+                    <br />
                         <button type="submit" class="btn btn-default">Tampilkan</button>
-                    </div>      
                 </form>
                 <?php
                 if (!empty($data_pasien)) {
@@ -27,8 +35,8 @@ include 'breadcumbs.php';
                                 <th>Waktu Order</th>
                                 <th>Nama pasien</th>
                                 <th>Status Pemeriksaan</th>
-                                <th>Status Pembayaran</th>
-                                <th>-</th>
+                                <th>Status Validasi</th>
+                                <th>Validasi</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -37,8 +45,8 @@ include 'breadcumbs.php';
                                 <th>Waktu Order</th>
                                 <th>Nama pasien</th>
                                 <th>Status Pemeriksaan</th>
-                                <th>Status Pembayaran</th>
-                                <th>-</th>
+                                <th>Status Validasi</th>
+                                <th>Validasi</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -71,13 +79,13 @@ include 'breadcumbs.php';
                                     </td>
                                     <td style="text-align: center">
                                         <?php
-                                        if ($d['status_pembayaran'] == 0) {
+                                        if ($d['status_validasi'] == 0) {
                                             ?>
-                                            <span class="btn btn-danger">Belum Ada Pembayaran</span>
+                                            <span class="btn btn-danger">Belum Valid</span>
                                             <?php
-                                        } else if ($d['status_pembayaran'] == 1) {
+                                        } else if ($d['status_validasi'] == 1) {
                                             ?>
-                                            <span class="btn btn-success">Lunas</span>
+                                            <span class="btn btn-success">Valid</span>
                                             <?php
                                         }
                                         ?>

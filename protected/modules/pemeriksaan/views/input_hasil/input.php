@@ -1,7 +1,11 @@
 <?php
 include 'breadcumbs.php';
 ?>
-
+<style>
+    .control-label{
+        font-weight: bold
+    }
+</style>
 <div class="row-fluid">
     <div class="span12">
         <div class="widget">
@@ -9,14 +13,23 @@ include 'breadcumbs.php';
                 <i class=" icon-tasks"></i>
                 <h3>Input Hasil Pasien Pemeriksaan</h3>
             </div> <!-- /widget-header -->
-            <div class="widget-content">    
-                <h2>Data Pasien Pemeriksaan</h2>
-                <p style="margin: 20px 0px"><a class="btn btn" href="<?php echo Yii::app()->createUrl('pemeriksaan/input_hasil/read'); ?>"><i class="icon-chevron-left"></i>&nbsp;&nbsp;Back</a></p>
-                <?php if (Yii::app()->user->hasFlash('success')): ?>
+            <div class="widget-content">        
+                 <?php if (Yii::app()->user->hasFlash('success')): ?>
                     <div class="alert alert-success">
                         <?php echo Yii::app()->user->getFlash('success'); ?>
                     </div>
-                <?php endif; ?>
+                <?php endif; ?>            
+                <p style="margin: 5px"><a class="btn btn" href="<?php echo Yii::app()->createUrl('pemeriksaan/input_hasil/read'); ?>"><i class="icon-chevron-left"></i>&nbsp;&nbsp;Back</a></p>                
+                <?php $this->renderPartial('_section_pasien', array(                    
+                    'data_pasien_tipe' => $data_pasien_tipe,
+                    'data_dokter' => $data_dokter,
+                    'data_instansi'=>$data_instansi,
+                    'data_pasien' => $data_pasien,
+                    'data_registrasi' => $data_registrasi,
+                    )
+                ) ?>
+                <h2>Data Pemeriksaan</h2>
+                <hr/>
                 <form class="form-horizontal form-validation" method="post" enctype="multipart/form-data" style="width: 98%;margin: 10px 10px 10px 10px">
                     <fieldset>
                         <table id="pasien-pemeriksaan-table" class="table table-striped table-bordered">

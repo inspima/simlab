@@ -37,7 +37,21 @@ foreach ($data_notifikasi as $d) {
         <br/>
         - <?php echo $d['isi_notifikasi'] ?> 
         <hr/>
-        - Silahkan klik link <a target="_blank" style="font-weight: bold;color: red" href="<?php echo $d['link_notifikasi'] ?>">disini</a> untuk memproses<br/>
+        - Silahkan klik link untuk memproses 
+        <?php
+        if($d['judul_notifikasi']=='Validasi Hasil'){
+            ?>
+            ( <a target="_blank" style="font-weight: bold;color: red" href="<?php echo $d['link_notifikasi'] ?>">Cetak</a>) 
+            / 
+            ( <a target="_blank" style="font-weight: bold;color: red" href="<?php echo str_replace('hasil_pemeriksaan','hasil_pemeriksaan_new',$d['link_notifikasi']) ?>">Cetak & TTD)</a>)<br/>
+            <?php
+        }else{
+            ?>
+            ( <a target="_blank" style="font-weight: bold;color: red" href="<?php echo $d['link_notifikasi'] ?>">Proses</a>) <br/>
+            <?php
+        }
+        ?>
+        
         - Informasi ini akan hilang secara otomatis dalam waktu <b><?php echo $d['batas_tampil'] ?> Hari</b><br/>
     </div>
     <?php

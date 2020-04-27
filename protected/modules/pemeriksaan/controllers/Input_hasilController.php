@@ -23,7 +23,7 @@ class Input_hasilController extends Controller
         return array(
             array(
                 'allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('read','readDataAjax', 'input'),
+                'actions' => array('read', 'readDataAjax', 'input'),
                 'users' => array('@'),
             ),
             array(
@@ -87,7 +87,7 @@ class Input_hasilController extends Controller
         $id_user = Yii::app()->user->getId();
         $id_unit = Yii::app()->request->getParam('unit');
         $id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
-        
+
         $this->render('read', array(
             'id_unit' => $id_unit_user,
             'id_unit_user' => Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar(),
@@ -264,6 +264,13 @@ class Input_hasilController extends Controller
                 $registrasi_update_team->save();
             }
         }
+
+        $data_pasien_tipe = PasienTipe::model()->findAll();
+        $data_dokter = Dokter::model()->findAll();        
+        $data_instansi = Instansi::model()->findAll();
+        $data_pasien = Yii::app()->db->createCommand("select * from pasien where id_pasien in (select id_pasien from registrasi_pemeriksaan where id_registrasi_pemeriksaan='{$id_registrasi}')")->queryRow();
+        $data_registrasi = Yii::app()->db->createCommand("select * from registrasi_pemeriksaan where id_registrasi_pemeriksaan='{$id_registrasi}'")->queryRow();
+
         $query_sample_pasien = "
             select rps.*,s.nama_sample
             from registrasi_pasien_sample rps
@@ -273,6 +280,11 @@ class Input_hasilController extends Controller
         $data_pasien_pemeriksaan = $this->getPasienPemeriksan($id_registrasi);
         $this->render('input', array(
             'id_registrasi' => $id_registrasi,
+            'data_pasien_tipe' => $data_pasien_tipe,
+            'data_dokter' => $data_dokter,
+            'data_instansi'=>$data_instansi,
+            'data_pasien' => $data_pasien,
+            'data_registrasi' => $data_registrasi,
             'data_sample_pasien' => $data_sample_pasien,
             'data_pasien_pemeriksaan' => $data_pasien_pemeriksaan
         ));

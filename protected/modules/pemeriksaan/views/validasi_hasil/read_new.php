@@ -6,7 +6,7 @@ include 'breadcumbs.php';
         <div class="widget" >
             <div class="widget-header">
                 <i class=" icon-tasks"></i>
-                <h3>Input Hasil Pemeriksaan </h3>
+                <h3>Validasi Hasil Pemeriksaan </h3>
             </div> <!-- /widget-header -->
             <div class="widget-content" style="padding-bottom: 250px">    
                 <h2>Data Registrasi Pemeriksaan Pasien</h2>
@@ -84,7 +84,7 @@ if(!empty($id_unit)){
             "ordering": false,
             "processing": true,
             "serverSide": true,
-            "ajax": "<?php echo Yii::app()->createUrl('pemeriksaan/input_hasil/readDataAjax?id_unit='.$id_unit); ?>", 
+            "ajax": "<?php echo Yii::app()->createUrl('pemeriksaan/validasi_hasil/readDataAjax?id_unit='.$id_unit); ?>", 
         });
 
     });

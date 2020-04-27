@@ -79,9 +79,29 @@ class Validasi_covidController extends Controller {
         //$id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
         $id_unit_user = 6;
         $tgl = Yii::app()->request->getParam('tgl');
+        $nama = Yii::app()->request->getParam('nama');
+        $q_nama = "";
+        $q_nama_2 = "";
+        $q_tgl_1 = "";
+        $q_tgl_2 = "";
+        
+        if (!empty($nama)) 
+            {
+            $q_nama = " LEFT JOIN registrasi_pemeriksaan d ON a.id_registrasi_pemeriksaan = d.id_registrasi_pemeriksaan
+                       LEFT JOIN pasien e ON e.id_pasien = d.id_pasien
+                       WHERE e.nama LIKE '%{$nama}%'";
+            
+            $q_nama_2 = " c.nama LIKE '%{$nama}%'";
+            }
+        
+        else if (!empty($tgl)) 
+            {
+            $q_tgl_1 = " WHERE DATE_FORMAT(c.tgl_pengujian, '%Y-%m-%d') >= '{$tgl}'";
+            $q_tgl_2 = " DATE_FORMAT(a.tgl_pengujian, '%Y-%m-%d') >= '{$tgl}'";
+            }
       
        
-        if (!empty($tgl)) {
+        if (!empty($tgl))  {
             
             $query_view = "
                         SELECT
@@ -94,7 +114,7 @@ class Validasi_covidController extends Controller {
                     b.waktu_registrasi,
                     b.no_registrasi,
                     b.status_registrasi,
-                    b.status_pembayaran,
+                    a.status_validasi,
                     e.jumlah_sample,
                     e.sample,
                     a.hasil_pengujian
@@ -111,14 +131,15 @@ class Validasi_covidController extends Controller {
                     FROM
                             registrasi_pasien_sample a
                     LEFT JOIN sample b ON a.id_sample = b.id_sample
-                    LEFT JOIN pasien_pemeriksaan c ON a.id_registrasi_pasien_sample =c.id_registrasi_pemeriksaan
-                    WHERE DATE_FORMAT(c.tgl_pengujian, '%Y-%m-%d') >= '{$tgl}'
+                    LEFT JOIN pasien_pemeriksaan c ON a.id_registrasi_pasien_sample =c.id_registrasi_pemeriksaan".$q_nama." 
+                    ".$q_tgl_1."
                     GROUP BY
                             a.id_registrasi_pemeriksaan
             ) e ON e.id_registrasi_pemeriksaan = b.id_registrasi_pemeriksaan
             WHERE
                     a.id_pengujian = '583'
-                    AND DATE_FORMAT(a.tgl_pengujian, '%Y-%m-%d') >= '{$tgl}'
+                    AND ".$q_tgl_2.$q_nama_2."
+                    order by a.status_validasi
             ";
             //echo ($query_view); die();
             $data = Yii::app()->db->createCommand($query_view)->queryAll();
@@ -141,6 +162,7 @@ class Validasi_covidController extends Controller {
             $id_registrasi = Yii::app()->request->getPost('id_registrasi');
             $id_user_login = Yii::app()->user->getId();
             $id_pegawai_login = Yii::app()->db->createCommand("select id_pegawai from pegawai where id_user='{$id_user_login}'")->queryScalar();
+            //var_dump($id_pegawai_login); die();
             $sukses_input = 0;
             $validasi_input = 0;
             for ($i = 1; $i <= $jumlah_data; $i++) {
@@ -157,6 +179,7 @@ class Validasi_covidController extends Controller {
                 $notifikasi_model->waktu_notifikasi = date('Y-m-d h:i:s');
                 $notifikasi_model->save();  
                 if (!empty($validasi)) {
+                    
                     $pasien_pemeriksaan = PasienPemeriksaan::model()->findByPk($id_pasien_pemeriksaan);
                     $pasien_pemeriksaan->id_petugas_validasi = $id_pegawai_login;
                     $pasien_pemeriksaan->status_validasi = 1;

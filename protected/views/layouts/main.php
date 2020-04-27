@@ -88,7 +88,7 @@ $model_template = Template::model()->findByAttributes(array('id_template' => $mo
                         <?php
                         // SUBMENU NOTIFIKASI
                         // UNTUK BAGIAN REGISTRASI DAN PIMPINAN
-                        if (in_array($model_template_user->id_template, array(2, 3,6))) {
+                        if (in_array($model_template_user->id_template, array(2, 3,6, 8))) {
                             $array_submenu_notifikasi = array(
                                 /*array(
                                     'label' => '<i class="icon-caret-right"></i> <span id="jumlah-notifikasi-warning">0</span> Pemakaian Warning',

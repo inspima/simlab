@@ -9,13 +9,27 @@ include 'breadcumbs.php';
                 <i class=" icon-tasks"></i>
                 <h3>Validasi Hasil Pasien Pemeriksaan</h3>
             </div> <!-- /widget-header -->
-            <div class="widget-content">    
-                <h2>Data Pasien Pemeriksaan</h2>
-                <p style="margin: 20px 0px"><a class="btn btn" href="<?php echo Yii::app()->createUrl('pemeriksaan/validasi_hasil/read'); ?>"><i class="icon-chevron-left"></i>&nbsp;&nbsp;Back</a></p>
+            <div class="widget-content"> 
                 <?php if (Yii::app()->user->hasFlash('success')): ?>
-                    <div class="alert alert-success">
-                        <?php echo Yii::app()->user->getFlash('success'); ?>
-                    </div>
+                <div class="alert alert-success">
+                    <?php echo Yii::app()->user->getFlash('success'); ?>
+                </div>
+                <?php endif; ?>            
+                <p style="margin: 5px"><a class="btn btn" href="<?php echo Yii::app()->createUrl('pemeriksaan/input_hasil/read'); ?>"><i class="icon-chevron-left"></i>&nbsp;&nbsp;Back</a></p>                
+                <?php $this->renderPartial('_section_pasien', array(                    
+                    'data_pasien_tipe' => $data_pasien_tipe,
+                    'data_dokter' => $data_dokter,
+                    'data_instansi'=>$data_instansi,
+                    'data_pasien' => $data_pasien,
+                    'data_registrasi' => $data_registrasi,
+                    )
+                ) ?>
+                <h2>Data Pemeriksaan</h2>
+                <hr/>
+                <?php if (Yii::app()->user->hasFlash('success')): ?>
+                <div class="alert alert-success">
+                    <?php echo Yii::app()->user->getFlash('success'); ?>
+                </div>
                 <?php endif; ?>
                 <form class="form-horizontal form-validation" method="post" style="width: 98%;margin: 10px 10px 10px 10px">
                     <fieldset>
@@ -113,8 +127,9 @@ include 'breadcumbs.php';
                             <input type="hidden" name="mode" value="pasien_pemeriksaan"/>
                             <input type="hidden" name="id_registrasi" value="<?php echo $id_registrasi ?>"/>
                             <input type="hidden" name="jumlah_data" value="<?php echo $no-1 ?>"/>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <a class="btn" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id="" ><i class="icon-print"></i>Cetak Hasil</a>
+                            <button type="submit" class="btn btn-primary" style="margin-right: 20px">Save</button>
+                            <a class="btn" style="margin-right: 20px" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id="" ><i class="icon-print"></i>Cetak Hasil</a>
+                            <a class="btn btn-info" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan_new?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id="" ><i class="icon-print"></i>Cetak Hasil & TTD</a>
                         </div> <!-- /form-actions -->
                     </fieldset>
                 </form>

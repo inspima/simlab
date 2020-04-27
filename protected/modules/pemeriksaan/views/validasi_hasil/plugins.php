@@ -7,7 +7,7 @@
 <script language="javascript" type="text/javascript"  src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap.datepicker.js"></script> 
 <script language="javascript" type="text/javascript"  src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap.datetimepicker.js"></script> 
 <script language="javascript" type="text/javascript"  src="<?php echo Yii::app()->baseUrl; ?>/js/locales/bootstrap-datetimepicker.ind.js"></script>
-<script language="javascript" type="text/javascript"  src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.datatables.js"></script> 
+<script language="javascript" type="text/javascript"  src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.datatables.min.js"></script> 
 <script language="javascript" type="text/javascript"  src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap.datatables.js"></script> 
 <script language="javascript" type="text/javascript"  src="<?php echo Yii::app()->baseUrl; ?>/js/excanvas.min.js"></script> 
 <script language="javascript" type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/chart.min.js" type="text/javascript"></script> 
