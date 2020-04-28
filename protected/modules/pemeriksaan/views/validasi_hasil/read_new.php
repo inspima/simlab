@@ -85,6 +85,9 @@ if(!empty($id_unit)){
             "processing": true,
             "serverSide": true,
             "ajax": "<?php echo Yii::app()->createUrl('pemeriksaan/validasi_hasil/readDataAjax?id_unit='.$id_unit); ?>", 
+            "language": {
+                "processing": "Sedang memuat data, mohon tunggu"
+            },
         });
 
     });

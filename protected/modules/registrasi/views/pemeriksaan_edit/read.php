@@ -49,6 +49,9 @@ include 'plugins.php';
             "processing": true,
             "serverSide": true,
             "ajax": "<?php echo Yii::app()->createUrl('registrasi/pemeriksaan_edit/readDataAjax'); ?>",
+            "language": {
+                "processing": "Sedang memuat data, mohon tunggu"
+            },
         });
         $('#registrasi-pemeriksaan-datatable-ajax tbody').on('click', '.registrasi-pemeriksaan-delete-button', function() {
             var c = confirm("Apakah anda yakin menghapus data ini");

@@ -24,7 +24,7 @@ class AjaxDataController extends Controller
             array(
                 'allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array(
-                    'getKota', 'getDivisi','selectPasienAll', 'DeletePasienPemeriksan', 'DeletePembayaranPasienPemeriksaan',
+                    'getKota', 'getDivisi', 'selectPasienAll', 'DeletePasienPemeriksan', 'DeletePembayaranPasienPemeriksaan',
                     'DeletePembayaranPasienPenyewaan', 'DeleteSamplePasienPemeriksaan', 'DeleteBahanPasien',
                     'getBarangSewaTarif', 'getBahanPengujian', 'getNoRegistrasiPemeriksaan', 'getNotification'
                 ),
@@ -153,15 +153,29 @@ class AjaxDataController extends Controller
     {
         $this->layout = false;
         $id_pasien = Yii::app()->request->getPost('id_pasien');
+        $limit = 1000;
         $query_view_pasien = "
             select p.*,k.nama_kota,ag.nama_agama
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
             order by id_pasien desc,p.nama
-            limit 0,3000
+            limit 0,$limit
             ";
         $data_pasien_all = Yii::app()->db->createCommand($query_view_pasien)->queryAll();
+        if ($id_pasien != 0 && $id_pasien < $data_pasien_all[$limit - 1]['id_pasien']) {
+            $query_view_pasien_new = "
+                select p.*,k.nama_kota,ag.nama_agama
+                from pasien p
+                left join kota k on k.id_kota=p.id_kota_lahir
+                left join agama ag on ag.id_agama=p.id_agama
+                where p.id_pasien='{$id_pasien}'
+                order by id_pasien desc,p.nama
+                ";
+            $data_pasien_new = Yii::app()->db->createCommand($query_view_pasien_new)->queryRow();
+            $data_pasien_all = array_merge($data_pasien_all, array($data_pasien_new));
+        }
+
         // TAMPIL DATA HTML
         echo '<select name="pasien" id="pasien" data-placeholder="Pilih Pasien..." tabindex="2">';
         foreach ($data_pasien_all as $d) {

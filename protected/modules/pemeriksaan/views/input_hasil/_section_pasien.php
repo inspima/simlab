@@ -19,6 +19,18 @@
             </div> <!-- /controls -->				
         </div> <!-- /control-group -->
         <div class="control-group">											
+            <label class="control-label" for="instansi">Tempat, Tanggal Lahir</label>
+            <div class="controls">
+            <?php
+                if($data_pasien['nama_kota']!=''){
+                    echo $data_pasien['nama_kota'].', '.date('d/m/Y',strtotime($data_pasien['tgl_lahir']));
+                }else{
+                    echo '<i style="color:orange">Kota lahir kosong</i>'.', '.date('d/m/Y',strtotime($data_pasien['tgl_lahir']));
+                }
+            ?>
+            </div> <!-- /controls -->				
+        </div> <!-- /control-group -->
+        <div class="control-group">											
             <label class="control-label" for="no_registrasi">No.Registrasi</label>
             <div class="controls">
             <?= $data_registrasi['no_registrasi'] ?>
@@ -53,36 +65,6 @@
                         endforeach;
                     ?>
                 </div>
-            </div> <!-- /controls -->
-        </div> <!-- /control-group -->
-        <div class="control-group">											
-            <label class="control-label" for="keluhan">Keluhan/Diagnosa</label>
-            <div class="controls">
-            <?php echo $data_registrasi['keluhan_diagnosa'] ?>
-            </div> <!-- /controls -->
-        </div> <!-- /control-group -->
-        <div class="control-group">											
-            <label class="control-label" for="keterangan">Keterangan Tambahan</label>
-            <div class="controls">
-            <?php echo $data_registrasi['keterangan_registrasi'] ?>
-            </div> <!-- /controls -->
-        </div> <!-- /control-group -->
-        <div class="control-group">											
-            <label class="control-label" for="uji_keperluan">Keperluan Uji</label>
-            <div class="controls">
-            <?php echo $data_registrasi['uji_keperluan'] ?>
-            </div> <!-- /controls -->
-        </div> <!-- /control-group -->
-        <div class="control-group">											
-            <label class="control-label" for="uji_parameter">Parameter Uji</label>
-            <div class="controls">
-            <?php echo $data_registrasi['uji_parameter'] ?>
-            </div> <!-- /controls -->
-        </div> <!-- /control-group -->
-        <div class="control-group">											
-            <label class="control-label" for="uji_metode">Metode Uji</label>
-            <div class="controls">
-            <?php echo $data_registrasi['uji_metode'] ?>
             </div> <!-- /controls -->
         </div> <!-- /control-group -->
     </fieldset>

@@ -268,7 +268,7 @@ class Input_hasilController extends Controller
         $data_pasien_tipe = PasienTipe::model()->findAll();
         $data_dokter = Dokter::model()->findAll();        
         $data_instansi = Instansi::model()->findAll();
-        $data_pasien = Yii::app()->db->createCommand("select * from pasien where id_pasien in (select id_pasien from registrasi_pemeriksaan where id_registrasi_pemeriksaan='{$id_registrasi}')")->queryRow();
+        $data_pasien = Yii::app()->db->createCommand("select pasien.*,kota.nama_kota from pasien left join kota on pasien.id_kota_lahir=kota.id_kota where id_pasien in (select id_pasien from registrasi_pemeriksaan where id_registrasi_pemeriksaan='{$id_registrasi}')")->queryRow();
         $data_registrasi = Yii::app()->db->createCommand("select * from registrasi_pemeriksaan where id_registrasi_pemeriksaan='{$id_registrasi}'")->queryRow();
 
         $query_sample_pasien = "

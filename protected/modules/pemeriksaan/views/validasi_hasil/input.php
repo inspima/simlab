@@ -2,6 +2,12 @@
 include 'breadcumbs.php';
 ?>
 
+<style>
+    .form-horizontal .control-label{
+        font-weight: bold;
+        padding-top: 0px;
+    }
+</style>
 <div class="row-fluid">
     <div class="span12">
         <div class="widget">
@@ -128,8 +134,8 @@ include 'breadcumbs.php';
                             <input type="hidden" name="id_registrasi" value="<?php echo $id_registrasi ?>"/>
                             <input type="hidden" name="jumlah_data" value="<?php echo $no-1 ?>"/>
                             <button type="submit" class="btn btn-primary" style="margin-right: 20px">Save</button>
-                            <a class="btn" style="margin-right: 20px" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id="" ><i class="icon-print"></i>Cetak Hasil</a>
-                            <a class="btn btn-info" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan_new?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id="" ><i class="icon-print"></i>Cetak Hasil & TTD</a>
+                            <a class="btn" style="margin-right: 20px" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id="" ><i class="icon-print"></i> Cetak Hasil</a>
+                            <a class="btn btn-info" href="<?php echo Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan_new?reg=' . $id_registrasi); ?>" target="_blank" title="Cetak Hasil Pemeriksaan" id="" ><i class="icon-print"></i> Cetak Hasil & TTD</a>
                         </div> <!-- /form-actions -->
                     </fieldset>
                 </form>

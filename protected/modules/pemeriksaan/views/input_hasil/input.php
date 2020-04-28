@@ -2,8 +2,9 @@
 include 'breadcumbs.php';
 ?>
 <style>
-    .control-label{
-        font-weight: bold
+    .form-horizontal .control-label{
+        font-weight: bold;
+        padding-top: 0px;
     }
 </style>
 <div class="row-fluid">
@@ -80,7 +81,7 @@ include 'breadcumbs.php';
                                                 <input type="hidden" name="pasien_pemeriksaan_<?php echo $no ?>" value="<?php echo $dpp['id_pasien_pemeriksaan']; ?>"/>
                                             </td>
                                             <td style="text-align: center">
-                                                <textarea style="width: 90%;height: 60px;resize: none" name="keterangan_<?php echo $no ?>"><?php echo $dpp['keterangan_pemeriksaan'] ?></textarea>
+                                                <textarea style="width: 90%;height: 120px;resize: none" name="keterangan_<?php echo $no ?>"><?php echo $dpp['keterangan_pemeriksaan'] ?></textarea>
                                             </td>
                                             <td>
                                                 NO.Sertifikat <br/>
@@ -90,7 +91,7 @@ include 'breadcumbs.php';
                                                 <input style="width: 90%" type="text" name="no_order_<?php echo $no ?>" size="20" value=""/>
                                             </td>
                                             <td style="text-align: center">
-                                                <span class="btn btn-warning">Belum Divalidasi</span>
+                                                <span class="btn btn-warning">Belum</span>
                                             </td>
                                             <td style="text-align: center">
                                                 <?php if($dpp['file_lampiran'] != ''){echo CHtml::link('DOWNLOAD FILE',Yii::app()->request->baseUrl.'/files/hasil_pemeriksaan/'.$dpp['file_lampiran'],array('target'=>'_blank'))."<br />";}?>
@@ -127,8 +128,9 @@ include 'breadcumbs.php';
                                                 <?php echo $dpp['keterangan_pemeriksaan'] ?>
                                                 <input type="hidden" name="keterangan_<?php echo $no ?>" value="<?php echo $dpp['keterangan_pemeriksaan']; ?>"/>
                                             </td>
+                                            <td></td>
                                             <td style="text-align: center">
-                                                <span class="btn btn-success">Sudah Divalidasi</span><br/>
+                                                <span class="btn btn-success">Sudah</span><br/>
                                                 <?php
                                                 if ($dpp['status_validasi'] == 1) {
                                                     echo 'Validasi Oleh : ' . $dpp['nama_validator'];

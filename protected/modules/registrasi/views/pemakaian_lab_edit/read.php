@@ -50,6 +50,9 @@ include 'plugins.php';
             "processing": true,
             "serverSide": true,
             "ajax": "<?php echo Yii::app()->createUrl('registrasi/pemakaian_lab_edit/readDataAjax'); ?>",
+            "language": {
+                "processing": "Sedang memuat data, mohon tunggu"
+            },
         });
         $('#registrasi-pemakaian-lab-datatable-ajax tbody').on('click', '.registrasi-penyewaan-delete-button', function() {
             var c = confirm("Apakah anda yakin menghapus data ini");
