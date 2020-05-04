@@ -2,7 +2,7 @@
 <hr/>
 <form class="form-horizontal form-validation" method="post" style="width: 98%;margin: 10px">
     <fieldset>
-        <div class="control-group">											
+        <div class="control-group">
             <label class="control-label" for="pasien">Nama</label>
             <div class="controls">
                 <?=$data_pasien['nama']?>
@@ -29,6 +29,12 @@
                 }
             ?>
             </div> <!-- /controls -->				
+        </div> <!-- /control-group -->        
+        <div class="control-group">
+            <label class="control-label" for="pasien">Umur</label>
+            <div class="controls">
+                <?=$umur_pasien?>
+            </div> <!-- /controls -->
         </div> <!-- /control-group -->
         <div class="control-group">											
             <label class="control-label" for="no_registrasi">No.Registrasi</label>

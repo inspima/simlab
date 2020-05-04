@@ -86,6 +86,7 @@
                 <?php
                 $no = 1;
                 foreach ($data_pemeriksaan as $d):
+                    $status_validasi = $d['status_validasi'];
                     ?>
                     <tr>
                         <!--<td><?php echo $no ?></td>-->
@@ -179,8 +180,9 @@
                                 Surabaya <?php echo $this->getDateIndo(date('Y-m-d')) ?><br/>
                                 <b>Manajer Teknis</b>
                                 <br/>
-                                <br/>
-                                <br/>
+                                <?php if($status_validasi == 1) { ?>
+                                <img height="147" width="274" src="<?php echo Yii::app()->createUrl('img/nrt-ttd.png'); ?>"/>
+                                <?php } ?>
                                 <br/>
                                 (<?php echo $user_pj['gelar_depan'] . ' ' . $user_pj['nama_pegawai'] . ' ' . $user_pj['gelar_belakang'] ?>)
                             </p>

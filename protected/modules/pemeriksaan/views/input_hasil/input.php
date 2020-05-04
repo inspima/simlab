@@ -21,7 +21,8 @@ include 'breadcumbs.php';
                     </div>
                 <?php endif; ?>            
                 <p style="margin: 5px"><a class="btn btn" href="<?php echo Yii::app()->createUrl('pemeriksaan/input_hasil/read'); ?>"><i class="icon-chevron-left"></i>&nbsp;&nbsp;Back</a></p>                
-                <?php $this->renderPartial('_section_pasien', array(                    
+                <?php $this->renderPartial('_section_pasien', array(
+                    'umur_pasien'=>$umur_pasien,
                     'data_pasien_tipe' => $data_pasien_tipe,
                     'data_dokter' => $data_dokter,
                     'data_instansi'=>$data_instansi,

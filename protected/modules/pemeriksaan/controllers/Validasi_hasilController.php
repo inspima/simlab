@@ -28,6 +28,18 @@ class Validasi_hasilController extends Controller {
         );
     }
 
+    private function getAgePatient($birth)
+    {
+        if (!empty($birth)) {
+            $bday = new DateTime(date('d-m-Y', strtotime($birth))); // Your date of birth
+            $today = new Datetime(date('d-m-Y'));
+            $diff = $today->diff($bday);
+            return $diff->y . ' Tahun, ' . $diff->m . ' Bulan,' . $diff->d . ' Hari';
+        } else {
+            return '-';
+        }
+    }
+
     private function getPasienPemeriksan($id_registrasi) {
         $id_user = Yii::app()->user->getId();
         $id_unit_user = Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
@@ -255,6 +267,7 @@ class Validasi_hasilController extends Controller {
         $data_pasien_pemeriksaan = $this->getPasienPemeriksan($id_registrasi);
         $this->render('input', array(
             'id_registrasi' => $id_registrasi,
+            'umur_pasien' => $this->getAgePatient($data_pasien['tgl_lahir']),
             'data_pasien_tipe' => $data_pasien_tipe,
             'data_dokter' => $data_dokter,
             'data_instansi'=>$data_instansi,
