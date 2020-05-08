@@ -49,7 +49,7 @@ include 'breadcumbs.php';
                             <th>Nama pasien</th>
                             <th>Keluhan Diagnosa</th>
                             <th>Status Pemeriksaan</th>
-                            <th>Status Pembayaran</th>
+                            <th>Status Validasi</th>
                             <th>-</th>
                         </tr>
                     </thead>
@@ -60,7 +60,7 @@ include 'breadcumbs.php';
                             <th>Nama pasien</th>
                             <th>Keluhan Diagnosa</th>
                             <th>Status Pemeriksaan</th>
-                            <th>Status Pembayaran</th>
+                            <th>Status Validasi</th>
                             <th>-</th>
                         </tr>
                     </tfoot>

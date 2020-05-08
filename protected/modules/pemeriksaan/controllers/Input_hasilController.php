@@ -127,7 +127,8 @@ class Input_hasilController extends Controller
             join pengujian peng on peng.id_pengujian=pp.id_pengujian and peng.id_unit='{$id_unit_user}'
             left join instansi i on i.id_instansi=r.id_instansi
             where lower(r.no_registrasi) like lower('%{$search}%') 
-            or lower(r.waktu_registrasi) like lower('%{$search}%')
+            or lower(r.waktu_registrasi) like lower('%{$search}%') 
+            or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
             or lower(p.nama)  like lower('%{$search}%')
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
@@ -146,7 +147,9 @@ class Input_hasilController extends Controller
             join pengujian peng on peng.id_pengujian=pp.id_pengujian and peng.id_unit='{$id_unit_user}'
             left join instansi i on i.id_instansi=r.id_instansi
             where lower(r.no_registrasi) like lower('%{$search}%') 
+            or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
             or lower(r.waktu_registrasi) like lower('%{$search}%')
+            or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
             or lower(p.nama)  like lower('%{$search}%')
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')

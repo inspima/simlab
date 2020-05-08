@@ -121,6 +121,7 @@ class Pemeriksaan_editController extends Controller {
             left join instansi i on i.id_instansi=r.id_instansi
             where lower(r.no_registrasi) like lower('%{$search}%') 
             or lower(r.waktu_registrasi) like lower('%{$search}%')
+            or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
             or lower(p.nama)  like lower('%{$search}%')
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
@@ -137,6 +138,7 @@ class Pemeriksaan_editController extends Controller {
             left join instansi i on i.id_instansi=r.id_instansi
              where lower(r.no_registrasi) like lower('%{$search}%') 
             or lower(r.waktu_registrasi) like lower('%{$search}%')
+            or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
             or lower(p.nama)  like lower('%{$search}%')
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')

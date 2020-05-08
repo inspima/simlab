@@ -19,7 +19,7 @@ class PasienController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('read','readAjax', 'view', 'create', 'update', 'delete', 'excel'),
+                'actions' => array('read','readAjax', 'view', 'create', 'update', 'delete', 'excel','checkRegistrasi'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -186,6 +186,18 @@ class PasienController extends Controller {
             'data_agama' => $data_agama,
             'propinsi_pasien' => $propinsi_pasien,
         ));
+    }
+
+    public function actionCheckRegistrasi() {
+        $this->layout = false;
+        if (!empty($_POST['id'])) {
+            $model = RegistrasiPemeriksaan::model()->findByAttributes(array('id_pasien' => $_POST['id']));
+            if(!empty($model)){
+                echo '0';
+            }else{
+                echo '1';
+            }
+        }
     }
 
     public function actionDelete() {

@@ -26,7 +26,7 @@ class CetakController extends Controller
                 'actions' => array(
                     'nota', 'bayar_pemeriksaan', 'hasil_pemeriksaan', 'hasil_pemeriksaan_new', 'deposit', 'bayar_penyewaan', 'penyewaan_lembar_lab',
                     'penyewaan_lembar_registrasi', 'penyewaan_lembar_pemohon', 'pemakaian_fasilitas', 'sertifikat_pengujian',
-                    'barcode'
+                    'barcode','barcode_single'
                 ),
                 'users' => array('@'),
             ),
@@ -494,7 +494,7 @@ class CetakController extends Controller
         // Location of barcode image storage.
         $location = Yii::getPathOfAlias("webroot") . '/barcode/' . $no_registrasi . '.jpg';
         barcode::Barcode39($no_registrasi, $width, $height, $quality, $text, $location);
-        $mpdf = Yii::app()->ePdf->mpdf('', [176, 222]);
+        $mpdf = Yii::app()->ePdf->mpdf('', [109, 222]);
         $title='Barcode-'.$data_registrasi['nama_pasien'].'-'.$data_registrasi['no_registrasi'];
         $mpdf->SetTitle($title);
         $param_assign = array(
@@ -504,5 +504,30 @@ class CetakController extends Controller
         );
         $mpdf->WriteHTML($this->renderPartial('barcode', $param_assign, true));
         $mpdf->Output($title.'.pdf', 'I');
+    }
+
+    public function actionBarcode_single()
+    {
+        $this->layout = false;        
+        Yii::import("application.extensions.barcode.*");
+        $id_registrasi = Yii::app()->request->getParam('reg');
+        $data_registrasi = $this->getDataRegistrasiPemeriksaan($id_registrasi);
+        $no_registrasi = $data_registrasi['id_registrasi_pemeriksaan'];
+        $width  = 460;
+        //Height of the barcode image.
+        $height = 54;
+        //Quality of the barcode image. Only for JPEG.
+        $quality = 100;
+        //1 if text should appear below the barcode. Otherwise 0.
+        $text = 0;
+        // Location of barcode image storage.
+        $location = Yii::getPathOfAlias("webroot") . '/barcode/' . $no_registrasi . '.jpg';
+        barcode::Barcode39($no_registrasi, $width, $height, $quality, $text, $location);
+        $param_assign = array(
+            'id_registrasi' => $id_registrasi,
+            'data_registrasi' => $data_registrasi,
+            'no_registrasi' => $no_registrasi,
+        );
+        $this->render('barcode_single', $param_assign);
     }
 }

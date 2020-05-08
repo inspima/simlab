@@ -52,15 +52,31 @@ include 'plugins.php';
         });
         $('#pasien-datatable tbody').on('click', '.pasien-delete-button', function() {
             var c = confirm("Apakah anda yakin menghapus data ini");
-            if (c === true)
+            var id=$(this).attr('id');
+            if (c === true){
                 $.ajax({
                     type: 'post',
-                    url: '<?php echo Yii::app()->createUrl('master/pasien/delete'); ?>',
-                    data: 'id=' + $(this).attr('id'),
+                    url: '<?php echo Yii::app()->createUrl('master/pasien/checkRegistrasi'); ?>',
+                    data: 'id=' + id,
                     success: function(data) {
-                        window.location.reload();
+                        var result = JSON.parse(data);
+                        console.log(result);
+                        if(result=='1'){
+                            $.ajax({
+                                type: 'post',
+                                url: '<?php echo Yii::app()->createUrl('master/pasien/delete'); ?>',
+                                data: 'id=' + id,
+                                success: function(data) {
+                                    window.location.reload();
+                                }
+                            });
+                        }else{
+                            alert("Data gagal dihapus, Masih terdapat data Registrasi atas nama Pasien tersebut")
+                        }
                     }
                 });
+            }
+                
         });
     });
 </script>
