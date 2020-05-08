@@ -108,6 +108,7 @@ class NotifikasiController extends Controller {
         $query_notifikasi ="
             SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
             WHERE n.tampil='1'
+            order by waktu_notifikasi desc
             ";
         $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
         $this->render('read', array(

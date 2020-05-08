@@ -189,11 +189,18 @@ class Validasi_hasilController extends Controller {
     public function actionReadNew() {
         $id_user = $id_user_login = Yii::app()->user->getId();
         $id_unit = Yii::app()->request->getParam('unit');
+        $role_user =  Yii::app()->db->createCommand("select id_template from template_user where id_user='{$id_user}' and status_aktif='1'")->queryScalar();
         $id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
+        // SUPER ADMIN DAN PIMPINAN TERBUKA SEMUA
+        if(in_array($role_user,[1,3])){
+            $id_unit_user='';
+        }else{            
+            $id_unit_user= Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
+        }
         
         $this->render('read_new', array(
             'id_unit' => $id_unit_user,
-            'id_unit_user' => Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar(),
+            'id_unit_user' =>$id_unit_user,
             'data_unit' => Unit::model()->findAll()
         ));
     }
@@ -201,12 +208,20 @@ class Validasi_hasilController extends Controller {
     public function actionRead() {
         $data = array();
         $id_user = $id_user_login = Yii::app()->user->getId();
+        
         $id_unit = Yii::app()->request->getParam('unit');
+        $role_user =  Yii::app()->db->createCommand("select id_template from template_user where id_user='{$id_user}' and status_aktif='1'")->queryScalar();
         $id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
+        // SUPER ADMIN DAN PIMPINAN TERBUKA SEMUA
+        if(in_array($role_user,[1,3])){
+            $id_unit_user='';
+        }else{            
+            $id_unit_user= Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar();
+        }
        
         $this->render('read_new', array(
-            'id_unit' => $id_unit_user,
-            'id_unit_user' => Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user}'")->queryScalar(),
+            'id_unit' => $id_unit,
+            'id_unit_user' => $id_unit_user,
             'data_unit' => Unit::model()->findAll(),
         ));
     }
