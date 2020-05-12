@@ -20,6 +20,11 @@ include 'breadcumbs.php';
                 <div class="alert alert-success">
                     <?php echo Yii::app()->user->getFlash('success'); ?>
                 </div>
+                <?php endif; ?> 
+                <?php if (Yii::app()->user->hasFlash('error')): ?>
+                <div class="alert alert-danger">
+                    <?php echo Yii::app()->user->getFlash('error'); ?>
+                </div>
                 <?php endif; ?>            
                 <p style="margin: 5px"><a class="btn btn" href="<?php echo Yii::app()->createUrl('pemeriksaan/validasi_hasil/read_all'); ?>"><i class="icon-chevron-left"></i>&nbsp;&nbsp;Back</a></p>                
                 <?php $this->renderPartial('_section_pasien', array(                    
