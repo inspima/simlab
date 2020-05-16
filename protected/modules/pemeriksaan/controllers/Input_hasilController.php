@@ -228,19 +228,32 @@ class Input_hasilController extends Controller
                     $pasien_pemeriksaan->file_lampiran->saveAs('files/hasil_pemeriksaan/' . $renameFile);
                     $pasien_pemeriksaan->file_lampiran = $renameFile;
                 }
-
-
+                if ($pasien_pemeriksaan->jumlah_save == 0) {
+                    // INSERT NOTIFIKASI
+                    $data_pasien = Yii::app()->db->createCommand("select r.no_registrasi,p.nama from registrasi_pemeriksaan r join pasien p on p.id_pasien=r.id_pasien where r.id_registrasi_pemeriksaan='{$id_registrasi}'")->queryRow();
+                    $notifikasi_model = new Notifikasi;
+                    $notifikasi_model->judul_notifikasi = "Hasil Pengujian";
+                    $notifikasi_model->isi_notifikasi = 'Hasil pengujian ' . $pengujian_txt . ' untuk no.reg : ' . $data_pasien['no_registrasi'] . ', nama : ' . $data_pasien['nama'] . ' telah dimasukkan';
+                    $notifikasi_model->link_notifikasi = Yii::app()->createUrl('pemeriksaan/validasi_hasil/input?reg=' . $id_registrasi);
+                    $notifikasi_model->batas_tampil = 3; // 3 hari
+                    $notifikasi_model->tampil = 1;
+                    $notifikasi_model->waktu_notifikasi = date('Y-m-d H:i:s');
+                    $notifikasi_model->save();
+                } else {
+                    // INSERT NOTIFIKASI
+                    $data_pasien = Yii::app()->db->createCommand("select r.no_registrasi,p.nama from registrasi_pemeriksaan r join pasien p on p.id_pasien=r.id_pasien where r.id_registrasi_pemeriksaan='{$id_registrasi}'")->queryRow();
+                    $notifikasi_model = new Notifikasi;
+                    $notifikasi_model->judul_notifikasi = "Hasil Pengujian";
+                    $notifikasi_model->isi_notifikasi = 'Hasil pengujian ' . $pengujian_txt . ' untuk no.reg : ' . $data_pasien['no_registrasi'] . ', nama : ' . $data_pasien['nama'] . ' telah diupdate';
+                    $notifikasi_model->link_notifikasi = Yii::app()->createUrl('pemeriksaan/validasi_hasil/input?reg=' . $id_registrasi);
+                    $notifikasi_model->batas_tampil = 3; // 3 hari
+                    $notifikasi_model->tampil = 1;
+                    $notifikasi_model->waktu_notifikasi = date('Y-m-d H:i:s');
+                    $notifikasi_model->save();
+                }
+                $pasien_pemeriksaan->jumlah_save = $pasien_pemeriksaan->jumlah_save + 1;
                 $pasien_pemeriksaan->save();
-                // INSERT NOTIFIKASI
-                $data_pasien = Yii::app()->db->createCommand("select r.no_registrasi,p.nama from registrasi_pemeriksaan r join pasien p on p.id_pasien=r.id_pasien where r.id_registrasi_pemeriksaan='{$id_registrasi}'")->queryRow();
-                $notifikasi_model = new Notifikasi;
-                $notifikasi_model->judul_notifikasi = "Hasil Pengujian";
-                $notifikasi_model->isi_notifikasi = 'Hasil pengujian ' . $pengujian_txt . ' untuk no.reg : ' . $data_pasien['no_registrasi'] . ', nama : ' . $data_pasien['nama'] . ' telah dimasukkan/diupdate';
-                $notifikasi_model->link_notifikasi = Yii::app()->createUrl('pemeriksaan/validasi_hasil/input?reg=' . $id_registrasi);
-                $notifikasi_model->batas_tampil = 3; // 3 hari
-                $notifikasi_model->tampil = 1;
-                $notifikasi_model->waktu_notifikasi = date('Y-m-d h:i:s');
-                $notifikasi_model->save();
+
                 //PERBAIKAN
                 if (!empty($id_pemeriksaan_group)) {
                     $jumlah_child = Yii::app()->request->getPost('jumlah_child_' . $i);

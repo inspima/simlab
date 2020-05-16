@@ -397,7 +397,7 @@ class Validasi_hasilController extends Controller
                 $notifikasi_model->link_notifikasi = Yii::app()->createUrl('registrasi/cetak/hasil_pemeriksaan?reg=' . $id_registrasi);
                 $notifikasi_model->batas_tampil = 3; // 3 hari
                 $notifikasi_model->tampil = 1;
-                $notifikasi_model->waktu_notifikasi = date('Y-m-d h:i:s');
+                $notifikasi_model->waktu_notifikasi = date('Y-m-d H:i:s');
                 $notifikasi_model->save();
                 if (!empty($validasi)) {
                     $pasien_pemeriksaan = PasienPemeriksaan::model()->findByPk($id_pasien_pemeriksaan);

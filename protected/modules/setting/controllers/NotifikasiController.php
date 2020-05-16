@@ -19,7 +19,7 @@ class NotifikasiController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('read','unread','validasi','input','set_terbaca','set_belum','set_sudah_validasi','set_'),
+                'actions' => array('read','unread','validasi','input','update','set_terbaca','set_belum','set_sudah_validasi','set_input','set_update'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -143,11 +143,23 @@ class NotifikasiController extends Controller {
     public function actionInput() {
         $query_notifikasi ="
             SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
-            WHERE n.tampil='1'   and isi_notifikasi like '%dimasukkan/diupdate%'
+            WHERE n.tampil='1'   and isi_notifikasi like '%dimasukkan%'
             order by waktu_notifikasi desc
             ";
         $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
         $this->render('input', array(
+            'data_notifikasi' => $data_notifikasi
+        ));
+    }
+
+    public function actionUpdate() {
+        $query_notifikasi ="
+            SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
+            WHERE n.tampil='1'   and isi_notifikasi like '%telah diupdate%'
+            order by waktu_notifikasi desc
+            ";
+        $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
+        $this->render('update', array(
             'data_notifikasi' => $data_notifikasi
         ));
     }
@@ -194,11 +206,28 @@ class NotifikasiController extends Controller {
         $notifikasi->save();
         $query_notifikasi ="
             SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
-            WHERE n.tampil='1'  and isi_notifikasi like '%dimasukkan/diupdate%'
+            WHERE n.tampil='1'  and isi_notifikasi like '%dimasukkan%'
             order by waktu_notifikasi desc
             ";
         $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
         $this->render('set-terbaca', array(
+            'data_notifikasi' => $data_notifikasi
+        ));
+    }
+
+    public function actionSet_update() {
+        $this->layout=false;
+        $id = Yii::app()->request->getPost('id');
+        $notifikasi = Notifikasi::model()->findByPk($id);
+        $notifikasi->baca=1;
+        $notifikasi->save();
+        $query_notifikasi ="
+            SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
+            WHERE n.tampil='1'  and isi_notifikasi like '%telah diupdate%'
+            order by waktu_notifikasi desc
+            ";
+        $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
+        $this->render('set-update', array(
             'data_notifikasi' => $data_notifikasi
         ));
     }

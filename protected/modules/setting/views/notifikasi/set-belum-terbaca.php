@@ -5,6 +5,7 @@
     <button class="btn btn-primary">Sudah terbaca</button>    
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/validasi') ?>"  type="button" class="btn btn-secondary">Validasi Hasil</a>
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/input') ?>"  type="button" class="btn btn-secondary">Input Hasil</a>
+    <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/update') ?>"  type="button" class="btn btn-secondary">Perubahan Hasil</a>
 </div>
 <label class="alert alert-success">Klik tombol untuk memfilter notifikasi</label>
 <div id="set-baca-loading" style="display: none;position: fixed;left:0;bottom: 20px;width: 100%;height: 20px;text-align: center">
