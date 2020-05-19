@@ -1,8 +1,8 @@
 <h2>Data Notifikasi</h2>
 <hr/>
 <div style="margin-bottom: 15px;" class="btn-group" role="group" aria-label="Group Notifikasi">
-    <button class="btn btn-primary">Belum terbaca</button>
-    <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/unread') ?>"  type="button" class="btn btn-secondary">Sudah terbaca</a>
+    <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/unread') ?>"  type="button" class="btn btn-secondary">Belum terbaca</a>
+    <button class="btn btn-primary">Sudah terbaca</button>
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/validasi') ?>"  type="button" class="btn btn-secondary">Validasi Hasil</a>
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/input') ?>"  type="button" class="btn btn-secondary">Input Hasil</a>
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/update') ?>"  type="button" class="btn btn-secondary">Perubahan Hasil</a>

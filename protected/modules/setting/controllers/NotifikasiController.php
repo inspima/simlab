@@ -19,7 +19,18 @@ class NotifikasiController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('read','unread','validasi','input','update','set_terbaca','set_belum','set_sudah_validasi','set_input','set_update'),
+                'actions' => array(
+                    'read',
+                    'unread',
+                    'readed',
+                    'validasi',
+                    'input',
+                    'update',
+                    'set_terbaca',
+                    'set_belum_terbaca',
+                    'set_sudah_validasi',
+                    'set_input',
+                    'set_update'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -119,11 +130,23 @@ class NotifikasiController extends Controller {
     public function actionUnread() {
         $query_notifikasi ="
             SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
-            WHERE n.tampil='1'  and baca='1'
+            WHERE n.tampil='1'  and baca='0'
             order by waktu_notifikasi desc
             ";
         $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
         $this->render('unread', array(
+            'data_notifikasi' => $data_notifikasi
+        ));
+    }
+
+    public function actionReaded() {
+        $query_notifikasi ="
+            SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
+            WHERE n.tampil='1'  and baca='1'
+            order by waktu_notifikasi desc
+            ";
+        $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
+        $this->render('readed', array(
             'data_notifikasi' => $data_notifikasi
         ));
     }
@@ -163,6 +186,23 @@ class NotifikasiController extends Controller {
             'data_notifikasi' => $data_notifikasi
         ));
     }
+
+    public function actionSet_belum_terbaca() {
+        $this->layout=false;
+        $id = Yii::app()->request->getPost('id');
+        $notifikasi = Notifikasi::model()->findByPk($id);
+        $notifikasi->baca=1;
+        $notifikasi->save();
+        $query_notifikasi ="
+            SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
+            WHERE n.tampil='1'  and baca='0'
+            order by waktu_notifikasi desc
+            ";
+        $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
+        $this->render('set-belum-terbaca', array(
+            'data_notifikasi' => $data_notifikasi
+        ));
+    }
     
     public function actionSet_terbaca() {
         $this->layout=false;
@@ -172,7 +212,7 @@ class NotifikasiController extends Controller {
         $notifikasi->save();
         $query_notifikasi ="
             SELECT DATEDIFF(now(),waktu_notifikasi) hitung_tampil,n.* FROM notifikasi n
-            WHERE n.tampil='1'  and baca='0'
+            WHERE n.tampil='1'  and baca='1'
             order by waktu_notifikasi desc
             ";
         $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
@@ -210,7 +250,7 @@ class NotifikasiController extends Controller {
             order by waktu_notifikasi desc
             ";
         $data_notifikasi = Yii::app()->db->createCommand($query_notifikasi)->queryAll();
-        $this->render('set-terbaca', array(
+        $this->render('set-input', array(
             'data_notifikasi' => $data_notifikasi
         ));
     }

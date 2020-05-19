@@ -1,8 +1,8 @@
 <h2>Data Notifikasi</h2>
 <hr/>
 <div style="margin-bottom: 15px;" class="btn-group" role="group" aria-label="Group Notifikasi">
-<a href="<?php echo Yii::app()->createUrl('setting/notifikasi/read') ?>"  type="button" class="btn btn-secondary">Belum terbaca</a>
-    <button class="btn btn-primary">Sudah terbaca</button>    
+    <button class="btn btn-primary">Belum terbaca</button>    
+    <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/readed') ?>"  type="button" class="btn btn-secondary">Sudah terbaca</a>
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/validasi') ?>"  type="button" class="btn btn-secondary">Validasi Hasil</a>
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/input') ?>"  type="button" class="btn btn-secondary">Input Hasil</a>
     <a href="<?php echo Yii::app()->createUrl('setting/notifikasi/update') ?>"  type="button" class="btn btn-secondary">Perubahan Hasil</a>
@@ -74,7 +74,7 @@ include 'plugins.php';
         $('.set-baca').click(function () {
             $.ajax({
                 type: 'post',
-                url: '<?php echo Yii::app()->createUrl('setting/notifikasi/set_terbaca') ?>',
+                url: '<?php echo Yii::app()->createUrl('setting/notifikasi/set_belum_terbaca') ?>',
                 data: 'id=' + $(this).attr('data-id'),
                 beforeSend: function () {
                     $('#set-baca-loading').show();

@@ -149,7 +149,7 @@ $model_template = Template::model()->findByAttributes(array('id_template' => $mo
                             'items' => array(
                                 array(
                                     'label' => '<span id="jumlah-notifikasi" class=""></span></i> Notifikasi Sistem</b>',
-                                    'url' => Yii::app()->createUrl('setting/notifikasi/read'),
+                                    'url' => Yii::app()->createUrl('setting/notifikasi/unread'),
                                     'items' => $array_submenu_notifikasi,
                                 ),
                                 array(

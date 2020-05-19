@@ -1340,6 +1340,19 @@ include 'plugins.php';
         });
 
     });
+    setInterval(function() {
+        if($('#instansi').val()!=''){
+            $.ajax({
+                url: '<?php echo Yii::app()->createUrl('AjaxData/getNoRegistrasiPemeriksaan/') ?>',
+                data: 'id_instansi=' + $('#instansi').val(),
+                type: 'post',
+                success: function(data) {
+                    var instansi = $.parseJSON(data);
+                    $('#no_registrasi').val(instansi.no_registrasi);
+                }
+            });
+        }        
+    }, 2000);
     $('#potongan').keyup(function() {
         $('#total_dibayar').val($('#total_biaya').val() - $(this).val());
     });
