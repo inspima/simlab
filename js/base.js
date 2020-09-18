@@ -1,5 +1,5 @@
 $(function() {
-    var system_location_folder = '/simitd/simlab';
+    var system_location_folder = '/';
     var ajax_loading_html = '<div style="width: 100%;margin: 8px 0px;" align="center"><img src="http://' + window.location.host + system_location_folder + '/img/ajax-loading.gif" /></div>'
     var protocol = 'https://';
     $('.subnavbar').find('li').each(function(i) {

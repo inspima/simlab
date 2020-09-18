@@ -17,30 +17,6 @@
 
     </head>
     <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="<?php echo Yii::app()->homeUrl; ?>">
-                        <?php echo CHtml::encode(Yii::app()->name); ?>				
-                    </a>		
-                    <div class="nav-collapse">
-                        <ul class="nav pull-right">
-                            <li class="">						
-                                <a href="<?php echo Yii::app()->homeUrl; ?>" class="">
-                                    <i class="icon-home"></i>
-                                    Homepage
-                                </a>
-                            </li>
-                        </ul>
-                    </div><!--/.nav-collapse -->	
-                </div> <!-- /container -->
-            </div> <!-- /navbar-inner -->
-        </div> <!-- /navbar -->
         <div class="account-container">
             <div class="content clearfix">
                 <form action="<?php echo Yii::app()->request->url ?>" method="post">

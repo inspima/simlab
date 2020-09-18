@@ -33,7 +33,7 @@ include 'breadcumbs.php';
                                     <?php
                                     $no_menu=1;
                                     foreach ($template_menu as $tm) {
-                                        if (count($tm['CHILD_MENU'] > 0)) {
+                                        if (count($tm['CHILD_MENU']) > 0) {
                                             ?>
                                             <li> 
                                                 <input type="checkbox" class="parent" id="<?php echo $tm['id_menu'] ?>" name="menu<?php echo $no_menu ?>" value="1" <?php if($tm['id_template']!=''){echo 'checked="true"';}?>/>

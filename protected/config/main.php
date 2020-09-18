@@ -6,7 +6,7 @@
 // CWebApplication properties can be configured here.
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => 'Sistem Informasi Manajemen Laboratorium ITD Unair',
+    'name' => 'SIM LABORATORIUM',
     // preloading 'log' component
     'preload' => array('log'),
     // autoloading model and component classes
@@ -41,6 +41,9 @@ return array(
             // enable cookie-based authentication
             'allowAutoLogin' => true,
         ),
+        'cache'=> [
+            'class'=>'CDummyCache',
+        ],
         /*
           'db' => array(
           'connectionString' => 'sqlite:protected/data/blog.db',
@@ -51,8 +54,8 @@ return array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=simlab',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => '#mysql_itd_unair#',
+            'username' => 'proyek',
+            'password' => 'Pr0y3k-dev',
             'charset' => 'utf8',
         ),
         'errorHandler' => array(
