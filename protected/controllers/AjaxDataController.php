@@ -170,6 +170,9 @@ class AjaxDataController extends Controller
             limit 0,$limit
             ";
         $data_pasien_all = Yii::app()->db->createCommand($query_view_pasien)->queryAll();
+        if (count($data_pasien_all) < 1000) {
+            $limit = count($data_pasien_all);
+        }
         if ($id_pasien != 0 && $id_pasien < $data_pasien_all[$limit - 1]['id_pasien']) {
             $query_view_pasien_new = "
                 select p.*,k.nama_kota,ag.nama_agama
@@ -400,18 +403,19 @@ class AjaxDataController extends Controller
         Yii::app()->end();
     }
 
-    public function actionUpdateNotification(){
+    public function actionUpdateNotification()
+    {
         $this->layout = false;
         $query_count = "
             select * from view_notifikasi_count
         ";
         $view_notifikasi_count = Yii::app()->db->createCommand($query_count)->queryRow();
-        $notifikasi_count=NotifikasiCount::model()->findByPk(1);
-        $notifikasi_count->total=$view_notifikasi_count['total'];
-        $notifikasi_count->baru=$view_notifikasi_count['baru'];
-        $notifikasi_count->proses=$view_notifikasi_count['proses'];
-        $notifikasi_count->sudah=$view_notifikasi_count['sudah'];
-        $notifikasi_count->order_warning=$view_notifikasi_count['order_warning'];
+        $notifikasi_count = NotifikasiCount::model()->findByPk(1);
+        $notifikasi_count->total = $view_notifikasi_count['total'];
+        $notifikasi_count->baru = $view_notifikasi_count['baru'];
+        $notifikasi_count->proses = $view_notifikasi_count['proses'];
+        $notifikasi_count->sudah = $view_notifikasi_count['sudah'];
+        $notifikasi_count->order_warning = $view_notifikasi_count['order_warning'];
         $notifikasi_count->save();
         $query_count = "
             select * from view_notifikasi_count
@@ -420,5 +424,4 @@ class AjaxDataController extends Controller
         echo json_encode($view_notifikasi_count);
         Yii::app()->end();
     }
-    
 }
