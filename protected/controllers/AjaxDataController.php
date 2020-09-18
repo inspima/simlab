@@ -169,7 +169,10 @@ class AjaxDataController extends Controller
             order by id_pasien desc,p.nama
             limit 0,$limit
             ";
-        $data_pasien_all = Yii::app()->db->createCommand($query_view_pasien)->queryAll();
+        $data_pasien_all = Yii::app()->db->createCommand($query_view_pasien)->queryAll();        
+        if (count($data_pasien_all) < 1000) {
+            $limit = count($data_pasien_all);
+        }
         if ($id_pasien != 0 && $id_pasien < $data_pasien_all[$limit - 1]['id_pasien']) {
             $query_view_pasien_new = "
                 select p.*,k.nama_kota,ag.nama_agama
