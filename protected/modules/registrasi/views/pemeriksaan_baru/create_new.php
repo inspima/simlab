@@ -47,6 +47,13 @@ include 'breadcumbs.php';
                                                                 <input type="text" class="span3 validate[required]" name="nama" value="">
                                                             </div> <!-- /controls -->				
                                                         </div> <!-- /control-group -->
+                                                        
+                                                         <div class="control-group">											
+                                                            <label class="control-label" for="nik">NIK</label>
+                                                            <div class="controls">
+                                                                <input type="text" class="span3 validate[required]" name="nik" value="">
+                                                            </div> <!-- /controls -->				
+                                                        </div> <!-- /control-group -->
 
 
                                                         <div class="control-group">											

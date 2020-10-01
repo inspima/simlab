@@ -58,7 +58,8 @@ class PasienController extends Controller {
             LEFT JOIN kota k ON k.id_kota=p.id_kota_lahir
             LEFT JOIN agama ag ON ag.id_agama=p.id_agama
             where lower(p.nama) like lower('%{$search}%') 
-           or lower(p.alamat) like lower('%{$search}%')
+            or lower(p.alamat) like lower('%{$search}%')
+            or lower(p.nik) like lower('%{$search}%')
             ORDER BY p.nama
             limit {$start},{$length}
             ";
@@ -70,6 +71,7 @@ class PasienController extends Controller {
             LEFT JOIN agama ag ON ag.id_agama=p.id_agama
              where lower(p.nama) like lower('%{$search}%') 
             or lower(p.alamat) like lower('%{$search}%')
+            or lower(p.nik) like lower('%{$search}%')
             ORDER BY p.nama
             ";
         $data = Yii::app()->db->createCommand($query_view)->queryAll();
@@ -86,6 +88,7 @@ class PasienController extends Controller {
             
             array_push($result, array(
                             $d['nama'],
+                            $d['nik'],
                             $d['nama_kota'].'<br/>'.date('d-m-Y', strtotime($d['tgl_lahir'])),
                             $d['jenis_kelamin'] == 1 ? "Laki-laki" : "Perempuan",
                             $d['nama_agama'],
@@ -133,6 +136,7 @@ class PasienController extends Controller {
             $pasien = new Pasien;
             $pasien->no_id_pasien = Yii::app()->request->getPost('no_id_pasien');
             $pasien->nama = Yii::app()->request->getPost('nama');
+            $pasien->nik = Yii::app()->request->getPost('nik');
             $pasien->jenis_kelamin = Yii::app()->request->getPost('jenis_kelamin');
             $pasien->tgl_lahir = Yii::app()->request->getPost('tgl_lahir');
             $pasien->umur = Yii::app()->request->getPost('umur');
@@ -142,7 +146,7 @@ class PasienController extends Controller {
             $pasien->telephone = Yii::app()->request->getPost('telepon');
             $pasien->hp = Yii::app()->request->getPost('hp');
             if ($pasien->save()) {
-                Yii::app()->user->setFlash('success', 'Data Pegawai berhasil disimpan');
+                Yii::app()->user->setFlash('success', 'Data Pasien berhasil disimpan');
             } else {
                 print_r($pasien->getErrors());
             }
@@ -161,6 +165,7 @@ class PasienController extends Controller {
         if (!empty($_POST)) {
             $pasien->no_id_pasien = Yii::app()->request->getPost('no_id_pasien');
             $pasien->nama = Yii::app()->request->getPost('nama');
+            $pasien->nik = Yii::app()->request->getPost('nik');
             $pasien->jenis_kelamin = Yii::app()->request->getPost('jenis_kelamin');
             $pasien->tgl_lahir = Yii::app()->request->getPost('tgl_lahir');
             $pasien->umur = Yii::app()->request->getPost('umur');
@@ -170,7 +175,7 @@ class PasienController extends Controller {
             $pasien->telephone = Yii::app()->request->getPost('telepon');
             $pasien->hp = Yii::app()->request->getPost('hp');
             if ($pasien->save()) {
-                Yii::app()->user->setFlash('success', 'Data Pegawai berhasil dirubah');
+                Yii::app()->user->setFlash('success', 'Data Pasien berhasil dirubah');
             } else {
                 print_r($pasien->getErrors());
             }

@@ -34,6 +34,21 @@ $(function() {
             }
         });
     });
+    
+    $('#jenis_instansi').change(function() {
+        $.ajax({
+            type: 'post',
+            url: protocol + window.location.host + system_location_folder + '/AjaxData/GetKodeInstansi',
+            dataType: 'html',
+            data: 'id' + '=' + $(this).val(),
+             success: function(data) {
+                $('#kode_instansi').html(data);
+                $('#kode_instansi').chosen();
+                $('#kode_instansi').trigger("chosen:updated");
+            }
+            
+        });
+    });
 
     $('#unit').change(function() {
         $.ajax({

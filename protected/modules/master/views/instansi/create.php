@@ -28,10 +28,28 @@ include 'breadcumbs.php';
                             </div> <!-- /controls -->				
                         </div> <!-- /control-group -->
                         
+                         <div class="control-group">											
+                            <label class="control-label" for="jenis">Jenis Instansi</label>
+                            <div class="controls">
+                                <div style="width: 50%">
+                                    <select name="jenis_instansi" class="chosen span5"  id="jenis_instansi" tabindex="2">
+                                        <?php
+                                        foreach ($data_instansi_jenis as $d):
+                                            ?>
+                                            <option value="<?php echo $d['id_instansi_jenis'] ?>"><?php echo $d['nama_instansi_jenis'] ?></option>
+                                            <?php
+                                        endforeach;
+                                        ?>
+                                    </select>
+                                </div>
+                            </div> <!-- /controls -->				
+                        </div> <!-- /control-group -->
+
+                        
                         <div class="control-group">											
                             <label class="control-label" for="kode">Kode Instansi</label>
                             <div class="controls">
-                                <input type="text" class="span8 validate[required]" name="kode" value="">
+                                <select name="kode_instansi" class="chosen span5 validate[required]" id="kode_instansi" data-placeholder="" tabindex="2"></select>
                             </div> <!-- /controls -->				
                         </div> <!-- /control-group -->
 
@@ -85,23 +103,7 @@ include 'breadcumbs.php';
                             </div> <!-- /controls -->				
                         </div> <!-- /control-group -->
 
-                        <div class="control-group">											
-                            <label class="control-label" for="jenis">Jenis Instansi</label>
-                            <div class="controls">
-                                <div style="width: 50%">
-                                    <select name="jenis" class="chosen span5"  tabindex="2">
-                                        <?php
-                                        foreach ($data_instansi_jenis as $d):
-                                            ?>
-                                            <option value="<?php echo $d['id_instansi_jenis'] ?>"><?php echo $d['nama_instansi_jenis'] ?></option>
-                                            <?php
-                                        endforeach;
-                                        ?>
-                                    </select>
-                                </div>
-                            </div> <!-- /controls -->				
-                        </div> <!-- /control-group -->
-
+                       
                         <br />
 
                         <div class="form-actions">

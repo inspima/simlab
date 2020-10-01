@@ -103,6 +103,7 @@ class Pemeriksaan_baruController extends Controller {
                 $pasien = new Pasien;
                 $pasien->no_id_pasien = Yii::app()->request->getPost('no_id_pasien');
                 $pasien->nama = Yii::app()->request->getPost('nama');
+                $pasien->nik = Yii::app()->request->getPost('nik');
                 $pasien->jenis_kelamin = Yii::app()->request->getPost('jenis_kelamin');
                 $pasien->tgl_lahir = Yii::app()->request->getPost('tgl_lahir');
                 $pasien->umur = Yii::app()->request->getPost('umur');
