@@ -23,7 +23,8 @@ class PemeriksaanController extends Controller {
                                    'pendapatan', 'PflBulanan','PflBulananRead', 
                                    'Lks', 'ExcelPengirim', 'ExcelLks', 
                                    'ExcelPendapatan', 'ExcelPfl', 'pendLab', 
-                                   'CtkPendLab', 'piutang', 'ctkPiutang', 'pel_piutang', 'CtkPel_piutang', 'Pendapatan_2'),
+                                   'CtkPendLab', 'piutang', 'ctkPiutang', 'pel_piutang', 
+                                   'CtkPel_piutang', 'Pendapatan_2', 'pascovid','ExcelPascovid','excelPendLab'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -411,5 +412,61 @@ class PemeriksaanController extends Controller {
        
             
         
+    }
+    
+     public function actionPascovid() {
+        $unit = Unit::model()->findAll(array('order'=>'id_unit DESC'));
+
+        if (!empty($_POST)) {
+            $pil_unit = Yii::app()->request->getPost('unit');
+            $nama_unit = Unit::model()->findByAttributes(array('id_unit' => $pil_unit));
+            $awal = Yii::app()->request->getPost('awal');
+            $akhir = Yii::app()->request->getPost('akhir');
+            $this->render('pascovid', array(
+                'unit' => $unit,
+                'pil_unit' => $pil_unit,
+                'nama_unit' => $nama_unit,
+                'awal' => $awal,
+                'akhir' => $akhir
+            ));
+        } else {
+            $pil_unit = null;
+            $this->render('pascovid', array(
+                'unit' => $unit,
+                'pil_unit' => $pil_unit,
+                'awal' => null,
+                'akhir' => null
+            ));
+        }
+    }
+    
+    public function actionExcelPascovid($b,$e) {
+            $this->layout = false;
+            //$pil_unit = Yii::app()->request->getQuery('id');
+            //$nama_unit = Unit::model()->findByAttributes(array('id_unit' => $pil_unit));
+            $awal = Yii::app()->getRequest()->getQuery('b');
+            $akhir = Yii::app()->getRequest()->getQuery('e');
+            $this->render('excelPascovid', array(
+                //'id' => $id,
+                //'pil_unit' => $pil_unit,
+                //'nama_unit' => $nama_unit,
+                'awal' => $awal,
+                'akhir' => $akhir
+            ));
+    }
+    
+    public function actionExcelPendLab($b,$e) {
+            $this->layout = false;
+            //$pil_unit = Yii::app()->request->getQuery('id');
+            //$nama_unit = Unit::model()->findByAttributes(array('id_unit' => $pil_unit));
+            $awal = Yii::app()->getRequest()->getQuery('b');
+            $akhir = Yii::app()->getRequest()->getQuery('e');
+            $this->render('excelPendLab', array(
+                //'id' => $id,
+                //'pil_unit' => $pil_unit,
+                //'nama_unit' => $nama_unit,
+                'awal' => $awal,
+                'akhir' => $akhir
+            ));
     }
 }

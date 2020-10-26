@@ -33,7 +33,9 @@ class AjaxDataController extends Controller
                 'actions' => array(
                     'getKota', 'getDivisi', 'selectPasienAll', 'DeletePasienPemeriksan', 'DeletePembayaranPasienPemeriksaan',
                     'DeletePembayaranPasienPenyewaan', 'DeleteSamplePasienPemeriksaan', 'DeleteBahanPasien',
-                    'getBarangSewaTarif', 'getBahanPengujian', 'getNoRegistrasiPemeriksaan', 'getNotification'
+                    'getBarangSewaTarif', 'getBahanPengujian', 'getNoRegistrasiPemeriksaan', 'getNotification',
+                    'getKodeInstansi'
+                    
                 ),
                 'users' => array('@'),
             ),
@@ -143,6 +145,18 @@ class AjaxDataController extends Controller
         foreach ($data as $d) {
             echo "<option value='{$d['id_kota']}'>{$d['nama_kota']}</option>";
         }
+    }
+    
+     public function actionGetKodeInstansi()
+    {
+        $this->layout = false;
+        $id_jenis_instansi = Yii::app()->request->getPost('id');
+        $query_kode_instansi = "SELECT max(kode_instansi)+1 FROM `instansi` WHERE id_instansi_jenis = '$id_jenis_instansi' ORDER BY kode_instansi";
+        $kode_instansi = Yii::app()->db->createCommand($query_kode_instansi)->queryScalar();
+        //TAMPIL DATA HTML
+        
+         echo "<option value='{$kode_instansi}'>{$kode_instansi}</option>";
+        
     }
 
     public function actionGetDivisi()
@@ -403,18 +417,19 @@ class AjaxDataController extends Controller
         Yii::app()->end();
     }
 
-    public function actionUpdateNotification(){
+    public function actionUpdateNotification()
+    {
         $this->layout = false;
         $query_count = "
             select * from view_notifikasi_count
         ";
         $view_notifikasi_count = Yii::app()->db->createCommand($query_count)->queryRow();
-        $notifikasi_count=NotifikasiCount::model()->findByPk(1);
-        $notifikasi_count->total=$view_notifikasi_count['total'];
-        $notifikasi_count->baru=$view_notifikasi_count['baru'];
-        $notifikasi_count->proses=$view_notifikasi_count['proses'];
-        $notifikasi_count->sudah=$view_notifikasi_count['sudah'];
-        $notifikasi_count->order_warning=$view_notifikasi_count['order_warning'];
+        $notifikasi_count = NotifikasiCount::model()->findByPk(1);
+        $notifikasi_count->total = $view_notifikasi_count['total'];
+        $notifikasi_count->baru = $view_notifikasi_count['baru'];
+        $notifikasi_count->proses = $view_notifikasi_count['proses'];
+        $notifikasi_count->sudah = $view_notifikasi_count['sudah'];
+        $notifikasi_count->order_warning = $view_notifikasi_count['order_warning'];
         $notifikasi_count->save();
         $query_count = "
             select * from view_notifikasi_count
@@ -423,5 +438,4 @@ class AjaxDataController extends Controller
         echo json_encode($view_notifikasi_count);
         Yii::app()->end();
     }
-    
 }

@@ -54,8 +54,16 @@ return array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=simlab',
             'emulatePrepare' => true,
-            'username' => 'proyek',
-            'password' => 'Pr0y3k-dev',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+        ),
+        'db2' => array(
+            'class' => 'CDbConnection',
+            'connectionString' => 'mysql:host=localhost;dbname=antrian_simlab',
+            'emulatePrepare' => true,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
         ),
         'errorHandler' => array(
@@ -73,8 +81,8 @@ return array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error, warning',
                 ),
-            // uncomment the following to show log messages on web pages
-            /*
+                // uncomment the following to show log messages on web pages
+                /*
               array(
               'class'=>'CWebLogRoute',
               ),
@@ -90,7 +98,7 @@ return array(
                         '_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
                     ),
                     'class' => 'mpdf', // the literal class filename to be loaded from the vendors folder
-                    'defaultParams' => array(// More info: http://mpdf1.com/manual/index.php?tid=184
+                    'defaultParams' => array( // More info: http://mpdf1.com/manual/index.php?tid=184
                         'mode' => '', //  This parameter specifies the mode of the new document.
                         'format' => 'A4', // format A4, A5, ...
                         'default_font_size' => 0, // Sets the default document font size in points (pt)
@@ -107,7 +115,7 @@ return array(
                 'HTML2PDF' => array(
                     'librarySourcePath' => 'application.vendors.html2pdf.*',
                     'classFile' => 'html2pdf.class.php', // For adding to Yii::$classMap
-                    'defaultParams' => array(// More info: http://wiki.spipu.net/doku.php?id=html2pdf:en:v4:accueil
+                    'defaultParams' => array( // More info: http://wiki.spipu.net/doku.php?id=html2pdf:en:v4:accueil
                         'orientation' => 'P', // landscape or portrait orientation
                         'format' => 'A4', // format A4, A5, ...
                         'language' => 'en', // language: fr, en, it ...

@@ -69,7 +69,8 @@ function getPengujian($id_reg){
                                 Tanggal : <input type="text" class="span2 datepicker validate[required]" name="awal" value="<?php if($awal == null) {echo date('Y-m-d');} else {echo $awal;}?>">
                                 Sampai: <input type="text" class="span2 datepicker validate[required]" name="akhir" value="<?php if($akhir == null) {echo date('Y-m-d');} else {echo $akhir;}?>">
                                 <button type="submit" class="btn btn-primary">Lihat</button>
-                                <?php  {echo '<a class="btn btn-info" target="_blank" href="'.Yii::app()->createUrl("laporan/pemeriksaan/ctkPendLab?id=$pil_unit&b=$awal&e=$akhir").'"><i class="icon-print"></i>&nbsp;&nbsp;Cetak</a>';} ?> 
+                                <?php  {echo '<a class="btn btn-info" target="_blank" href="'.Yii::app()->createUrl("laporan/pemeriksaan/ctkPendLab?id=$pil_unit&b=$awal&e=$akhir").'"><i class="icon-print"></i>&nbsp;&nbsp;Cetak</a>';} ?>
+                                <?php  {echo '<a class="btn btn-info" target="_blank" href="'.Yii::app()->createUrl("laporan/pemeriksaan/ExcelPendlab?b=$awal&e=$akhir").'"><i class="icon-arrow-down"></i>&nbsp;&nbsp;Download Excel</a>';} ?>				
                             </div> <!-- /controls -->				
                         </div> <!-- /control-group -->
                         

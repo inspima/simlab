@@ -15,6 +15,7 @@ include 'breadcumbs.php';
                     <thead>
                         <tr>
                             <th>Nama</th>
+                            <th>NIK</th>
                             <th>TTL, Umur</th>
                             <th>Jenis Kelamin</th>
                             <th>Agama</th>
@@ -26,6 +27,7 @@ include 'breadcumbs.php';
                     <tfoot>
                         <tr>
                             <th>Nama</th>
+                            <th>NIK</th>
                             <th>TTL, Umur</th>
                             <th>Jenis Kelamin</th>
                             <th>Agama</th>
