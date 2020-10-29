@@ -57,6 +57,15 @@ class Pasien_sinkronController extends Controller
             $pasien->telephone = $data['phone'];
             $pasien->hp = $data['mobile'];
             if ($pasien->save()) {
+                // Insert Tabel Sinkron
+                Yii::app()->db->createCommand()
+                    ->insert(
+                        'sync_antrian',
+                        array(
+                            'id_pasien' => $pasien->id_pasien,
+                            'id_antrian_reg_pasien' => $data['id'],
+                        )
+                    );
                 Yii::app()->user->setFlash('success', 'Data Pasien berhasil disimpan');
             } else {
                 print_r($pasien->getErrors());
@@ -141,13 +150,11 @@ class Pasien_sinkronController extends Controller
     }
 
 
-    public function cekData($name, $nik, $address)
+    public function cekData($id)
     {
         $query = "SELECT count(*) 
-            FROM `pasien`
-            WHERE nama LIKE '%$name%'
-            OR nik LIKE '%$nik%'
-            OR alamat LIKE '%$address%'";
+            FROM sync_antrian
+            WHERE id_antrian_reg_pasien='$id'";
         $data = Yii::app()->db->createCommand($query)->queryScalar();
         return $data;
     }

@@ -181,7 +181,7 @@ include 'breadcumbs.php';
                                         
                                     </div>
                                     <p>
-                                        <?php if($this->cekData($d['name'], $d['id_number'], $d['address']) >= 1) {echo '<div class="btn btn-success" ><b>Registered</b></div>';} ?>
+                                        <?php if($this->cekData($d['id']) >= 1) {echo '<div class="btn btn-success" ><b>Registered</b></div>';} ?>
                                     </p>
                                 </td>
                                 <td>
