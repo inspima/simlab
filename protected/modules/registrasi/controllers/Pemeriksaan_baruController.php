@@ -1,11 +1,13 @@
 <?php
 
-class Pemeriksaan_baruController extends Controller {
+class Pemeriksaan_baruController extends Controller
+{
 
     /**
      * @return array action filters
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
@@ -16,19 +18,23 @@ class Pemeriksaan_baruController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+            array(
+                'allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('read', 'view', 'create', 'update', 'delete'),
                 'users' => array('@'),
             ),
-            array('deny', // deny all users
+            array(
+                'deny', // deny all users
                 'users' => array('*'),
             ),
         );
     }
 
-    private function getPasienPemeriksan($id_registrasi) {
+    private function getPasienPemeriksan($id_registrasi)
+    {
         $result = array();
         $data_pasien_pemeriksaan = Yii::app()->db->createCommand("
                     select pp.*,p.nama_pengujian,p.nilai_normal,p.kode_pengujian 
@@ -62,7 +68,8 @@ class Pemeriksaan_baruController extends Controller {
         return $result;
     }
 
-    private function getDataPengujian() {
+    private function getDataPengujian()
+    {
         $arr_result = array();
         $data_kelompok = Yii::app()->db->createCommand("select * from pengujian_kelompok order by id_pengujian_kelompok")->queryAll();
         foreach ($data_kelompok as $dk) {
@@ -81,11 +88,13 @@ class Pemeriksaan_baruController extends Controller {
         return $arr_result;
     }
 
-    private function getPembayaranPemeriksaan($id_registrasi) {
+    private function getPembayaranPemeriksaan($id_registrasi)
+    {
         return Yii::app()->db->createCommand("select * from pembayaran_pemeriksaan where id_registrasi_pemeriksaan='{$id_registrasi}'")->queryAll();
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $step = 1;
         $id_pasien = '';
         $id_registrasi = '';
@@ -144,9 +153,26 @@ class Pemeriksaan_baruController extends Controller {
                 if ($registrasi->save()) {
                     $id_registrasi = $registrasi->id_registrasi_pemeriksaan;
                     $step = 2;
+                    // Sync update status pasien antrian
+                    $query_cek_integrasi = "SELECT * 
+                    FROM sync_antrian
+                    WHERE id_pasien=' $id_pasien'";
+                    $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
+                    if (!empty($data)) {
+                        Yii::app()->db2->createCommand()
+                            ->update(
+                                'registration_patients',
+                                array(
+                                    'simlab_reg_code' => $registrasi->no_registrasi,
+                                    'sync_status' => 1,
+                                ),
+                                'id=:id',
+                                array(':id' => $data['id_antrian_reg_pasien'])
+                            );
+                    }
                     Yii::app()->user->setFlash('success_registrasi', 'Data Registrasi berhasil dimasukkan');
                 } else {
-                    print_r($pasien->getErrors());
+                    print_r($registrasi->getErrors());
                 }
             } else if ($mode == 'pemeriksaan') {
                 $jumlah_data = Yii::app()->request->getPost('jumlah_data');
@@ -345,5 +371,4 @@ class Pemeriksaan_baruController extends Controller {
             'step' => $step
         ));
     }
-
 }
