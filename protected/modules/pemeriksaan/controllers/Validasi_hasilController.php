@@ -252,7 +252,7 @@ class Validasi_hasilController extends Controller
         or lower(i.nama_instansi)  like lower('%{$search}%')
         or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
         )
-        group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,r.id_registrasi_pemeriksaan
+        group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,r.id_registrasi_pemeriksaan,pxp.status_validasi
         order by r.waktu_registrasi desc
         limit {$start},{$length}
             ";
@@ -280,7 +280,7 @@ class Validasi_hasilController extends Controller
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
             )
-            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,id_registrasi_pemeriksaan
+            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,id_registrasi_pemeriksaan,pxp.status_validasi
             order by r.waktu_registrasi desc
             ";
 
@@ -415,6 +415,24 @@ class Validasi_hasilController extends Controller
                 }
             }
             if ($sukses_input > 0) {
+                $registrasi = RegistrasiPemeriksaan::model()->findByPk($id_registrasi);
+                // Sync update status pasien antrian
+                $query_cek_integrasi = "SELECT * 
+                FROM sync_antrian
+                WHERE id_pasien='{$registrasi->id_pasien}'";
+                $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
+                if (!empty($data)) {
+                    Yii::app()->db2->createCommand()
+                        ->update(
+                            'registration_patients',
+                            array(
+                                'simlab_reg_code' => $registrasi->no_registrasi,
+                                'sync_status' => 2,
+                            ),
+                            'id=:id',
+                            array(':id' => $data['id_antrian_reg_pasien'])
+                        );
+                }
                 Yii::app()->user->setFlash('success', 'Data Pasien Pemeriksaan berhasil divalidasi');
             }
             if ($sukses_input > 0 && ($jumlah_data - 1) == $validasi_input) {
