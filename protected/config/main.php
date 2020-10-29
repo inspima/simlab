@@ -41,8 +41,8 @@ return array(
             // enable cookie-based authentication
             'allowAutoLogin' => true,
         ),
-        'cache'=> [
-            'class'=>'CDummyCache',
+        'cache' => [
+            'class' => 'CDummyCache',
         ],
         /*
           'db' => array(
