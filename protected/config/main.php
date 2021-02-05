@@ -62,8 +62,8 @@
                 'class' => 'CDbConnection',
                 'connectionString' => 'mysql:host=localhost;dbname=antrian_simlab',
                 'emulatePrepare' => true,
-                'username' => 'root',
-                'password' => '',
+                'username' => 'proyek',
+                'password' => 'Pr0y3k-dev',
                 'charset' => 'utf8',
             ),
             'errorHandler' => array(
