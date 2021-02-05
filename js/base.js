@@ -1,4 +1,5 @@
 $(function() {
+    var base_url=$('#base_url_app').val();
     var system_location_folder = '/';
     var ajax_loading_html = '<div style="width: 100%;margin: 8px 0px;" align="center"><img src="http://' + window.location.host + system_location_folder + '/img/ajax-loading.gif" /></div>'
     var protocol = 'https://';
@@ -19,7 +20,7 @@ $(function() {
     $('#propinsi').change(function() {
         $.ajax({
             type: 'post',
-            url: 'AjaxData/GetKota',
+            url: base_url + '/AjaxData/GetKota',
             dataType: 'html',
             data: 'id' + '=' + $(this).val(),
             beforeSend: function() {
@@ -38,7 +39,7 @@ $(function() {
     $('#jenis_instansi').change(function() {
         $.ajax({
             type: 'post',
-            url: 'AjaxData/GetKodeInstansi',
+            url: base_url + '/AjaxData/GetKodeInstansi',
             dataType: 'html',
             data: 'id' + '=' + $(this).val(),
              success: function(data) {
@@ -53,7 +54,7 @@ $(function() {
     $('#unit').change(function() {
         $.ajax({
             type: 'post',
-            url: 'AjaxData/GetDivisi',
+            url: base_url + '/AjaxData/GetDivisi',
             dataType: 'html',
             data: 'id' + '=' + $(this).val(),
             beforeSend: function() {
@@ -75,7 +76,7 @@ $(function() {
     setInterval(function() {
         $.ajax({
             type: 'post',
-            url: 'AjaxData/GetNotification',
+            url: base_url + '/AjaxData/GetNotification',
             dataType: 'html',
             success: function(data) {
                 var notifikasi = $.parseJSON(data);
