@@ -88,6 +88,19 @@
             }
             return $result;
         }
+        private function getDataRegistrasiPemeriksaanByNomor($nomor)
+        {
+            $query = "
+            select rp.*,p.*,i.nama_instansi,d.nama_dokter,pt.nama_pasien_tipe,p.nama nama_pasien,p.alamat alamat_pasien,d.gelar_depan,d.gelar_belakang
+            from registrasi_pemeriksaan rp
+            join pasien p on rp.id_pasien=p.id_pasien
+            join instansi i on i.id_instansi=rp.id_instansi
+            left join dokter d on d.id_dokter=rp.id_dokter_pengirim
+            join pasien_tipe pt on pt.id_pasien_tipe =rp.id_pasien_tipe
+            where rp.no_registrasi='{$nomor}'
+            ";
+            return Yii::app()->db->createCommand($query)->queryRow();
+        }
 
         private function getPasienPemeriksanAll($id_registrasi)
         {
@@ -418,8 +431,8 @@
                     $registrasi = RegistrasiPemeriksaan::model()->findByPk($id_registrasi);
                     // Sync update status pasien antrian
                     $query_cek_integrasi = "SELECT * 
-                FROM sync_antrian
-                WHERE id_pasien='{$registrasi->id_pasien}'";
+                        FROM sync_antrian
+                        WHERE id_pasien='{$registrasi->id_pasien}'";
                     $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
                     if (!empty($data)) {
                         // Send API Update Status
