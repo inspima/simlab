@@ -7,3 +7,7 @@ themes/classic/views/
 files/hasil_pemeriksaan/*
 barcode/*
 uploads/*
+.idea/vcs.xml
+.idea/simlab.iml
+.idea/modules.xml
+.idea/misc.xml
