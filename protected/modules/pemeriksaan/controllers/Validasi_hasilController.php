@@ -436,9 +436,8 @@
                     $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
                     if (!empty($data)) {
                         // Send API Update Status
-                        $response = Yii::app()->curl->post('https://itd.unair.ac.id/registrasi/public/api/registrasi/update-status',
+                        $response = Yii::app()->curl->get('https://antrian-simlab.localhost/api/registrasi/update-status/'.$data['id_antrian_reg_pasien'],
                             [
-                                'id' => $data['id_antrian_reg_pasien'],
                                 'status' => 2
                             ]
                         );
