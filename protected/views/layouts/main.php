@@ -270,7 +270,7 @@
     <div class="footer-inner">
         <div class="container" style="width: 95%">
             <div class="row">
-                <div class="span12"> &copy; 2014 <a href="http://www.facebook.com/nambisembilu">Matooh Team</a>.</div>
+                <div class="span12"> &copy; 2014 <a href="https://inspima.com">Inspima</a>.</div>
                 <!-- /span12 -->
             </div>
             <!-- /row -->
