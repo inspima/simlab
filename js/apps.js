@@ -16,7 +16,7 @@ $(function() {
     $('#propinsi').change(function() {
         $.ajax({
             type: 'post',
-            url: '/AjaxData/GetKota',
+            url: 'AjaxData/GetKota',
             dataType: 'html',
             data: 'id' + '=' + $(this).val(),
             beforeSend: function() {
@@ -35,7 +35,7 @@ $(function() {
     $('#unit').change(function() {
         $.ajax({
             type: 'post',
-            url: '/AjaxData/GetDivisi',
+            url: 'AjaxData/GetDivisi',
             dataType: 'html',
             data: 'id' + '=' + $(this).val(),
             beforeSend: function() {
@@ -54,7 +54,7 @@ $(function() {
     setInterval(function() {
         $.ajax({
             type: 'post',
-            url: '/AjaxData/GetNotification',
+            url: 'AjaxData/GetNotification',
             dataType: 'html',
             success: function(data) {
                 var notifikasi = $.parseJSON(data);
@@ -89,7 +89,7 @@ $(function() {
     setInterval(function() {
         $.ajax({
             type: 'post',
-            url: 'http://' + window.location.host + system_location_folder + '/AjaxData/GetNotification',
+            url: 'http://' + window.location.host + system_location_folder + 'AjaxData/GetNotification',
             dataType: 'html',
             success: function(data) {
                 var notifikasi = $.parseJSON(data);
