@@ -72,53 +72,6 @@ class Pasien_sinkronController extends Controller
             }
         }
 
-        if ($mode == 'pasien') {
-            $id = Yii::app()->request->getPost('id');
-            $name = Yii::app()->request->getPost('nama');
-            $id_number = Yii::app()->request->getPost('nik');
-            $test_loop = Yii::app()->request->getPost('teske');
-            $gender = Yii::app()->request->getPost('kelamin');
-            $born_date = Yii::app()->request->getPost('tgl_lahir');
-            $age = Yii::app()->request->getPost('umur');
-            $phone = Yii::app()->request->getPost('telepon');
-            $mobile = Yii::app()->request->getPost('hp');
-            $address = Yii::app()->request->getPost('alamat');
-            //$tgl_awal = Yii::app()->request->getPost('tgl_awal');
-
-            /*$query_update_antrian = "UPDATE registration_patients
-                            SET id_number = '$id_number',
-                             name = '$name',
-                             age = '$age',
-                             gender = '$gender',
-                             born_date = '$born_date',
-                             address = '$address',
-                             phone = '$phone',
-                             mobile = '$mobile'
-                            WHERE (id = '$id')";
-            
-            //echo $query_update_antrian;  die();
-            Yii::app()->db2->createCommand($query_update_antrian)->queryAll();
-             * 
-             */
-            Yii::app()->db2->createCommand()
-                ->update(
-                    'registration_patients',
-                    array(
-                        'id_number' => $id_number,
-                        'test_loop' => $test_loop,
-                        'name' => $name,
-                        'age' => $age,
-                        'gender' => $gender,
-                        'born_date' => $born_date,
-                        'address' => $address,
-                        'phone' => $phone,
-                        'mobile' => $mobile,
-                    ),
-                    'id=:id',
-                    array(':id' => $id)
-                );
-        }
-
         $query_view = "
             SELECT p.*,k.nama_kota,ag.nama_agama
             FROM pasien p 
@@ -154,7 +107,7 @@ class Pasien_sinkronController extends Controller
     {
         $query = "SELECT count(*) 
             FROM sync_antrian
-            WHERE id_antrian_reg_pasien='$id'";
+            WHERE ='$id'";
         $data = Yii::app()->db->createCommand($query)->queryScalar();
         return $data;
     }
