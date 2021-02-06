@@ -23,8 +23,8 @@
             CURLOPT_HEADER => false,
             CURLOPT_VERBOSE => true,
             CURLOPT_AUTOREFERER => true,
-            CURLOPT_CONNECTTIMEOUT => 60,
-            CURLOPT_TIMEOUT => 60,
+            CURLOPT_CONNECTTIMEOUT => 300,
+            CURLOPT_TIMEOUT => 300,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
         );
