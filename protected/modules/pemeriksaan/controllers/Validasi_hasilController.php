@@ -428,20 +428,7 @@
                     }
                 }
                 if ($sukses_input > 0) {
-                    $registrasi = RegistrasiPemeriksaan::model()->findByPk($id_registrasi);
-                    // Sync update status pasien antrian
-                    $query_cek_integrasi = "SELECT * 
-                        FROM sync_antrian
-                        WHERE id_pasien='{$registrasi->id_pasien}'";
-                    $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
-                    if (!empty($data)) {
-                        // Send API Update Status
-                        $response = Yii::app()->curl->get('https://antrian-simlab.localhost/api/registrasi/update-status/'.$data['id_antrian_reg_pasien'],
-                            [
-                                'status' => 2
-                            ]
-                        );
-                    }
+
                     Yii::app()->user->setFlash('success', 'Data Pasien Pemeriksaan berhasil divalidasi');
                 }
                 if ($sukses_input > 0 && ($jumlah_data - 1) == $validasi_input) {

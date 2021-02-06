@@ -401,6 +401,24 @@
                     $pembayaran->save();
                     Yii::app()->user->setFlash('success_pembayaran', 'Data Pembayaran Berhasil di tambah');
                     $step = 4;
+                } else if ($mode == 'kirim_whatsapp') {
+                    $id_registrasi = Yii::app()->request->getPost('id_registrasi');
+                    $registrasi = RegistrasiPemeriksaan::model()->findByPk($id_registrasi);
+                    // Sync update status pasien antrian
+                    $query_cek_integrasi = "SELECT * 
+                        FROM sync_antrian
+                        WHERE id_pasien='{$registrasi->id_pasien}'";
+                    $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
+                    if (!empty($data)) {
+                        // Send API Update Status
+                        $response = Yii::app()->curl->get(Yii::app()->params['api_registrasi'] . '/registrasi/update-status/' . $data['id_antrian_reg_pasien'],
+                            [
+                                'status' => 2
+                            ]
+                        );
+                    }
+                    $step = 4;
+                    Yii::app()->user->setFlash('success_notifikasi', 'Notifikasi WhatsApp berhasil dikirim');
                 }
             }
             if (!empty($id_pasien)) {

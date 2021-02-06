@@ -346,47 +346,6 @@
             ));
         }
 
-        public function actionHasil_pemeriksaan_umum()
-        {
-            $this->layout = 'wide_main';
-            if (!empty($_POST)) {
-                $reg_code = urldecode(Yii::app()->request->getParam('reg'));
-                // Check Verify code
-                $response = Yii::app()->curl->post('http://antrian-simlab.localhost/api/registrasi/verify-code',
-                    [
-                        'ver_code' => Yii::app()->request->getPost('verify_code'),
-                        'reg_code' => $reg_code
-                    ]
-                );
-                $result_api = json_decode($response);
-                if ($result_api->status == '1') {
-                    $user_pj = Yii::app()->db->createCommand("select * from pegawai where id_pegawai='55'")->queryRow();
-                    $data_registrasi = $this->getDataRegistrasiPemeriksaanByNomor($reg_code);
-                    $data_pasien_pemeriksaan = $this->getPasienPemeriksanValidasi($data_registrasi['id_registrasi_pemeriksaan']);
-                    $this->render('hasil_pemeriksaan_umum', array(
-                        'id_registrasi' => $data_registrasi['id_registrasi_pemeriksaan'],
-                        'data_registrasi' => $data_registrasi,
-                        'user_pj' => $user_pj,
-                        'data_pemeriksaan' => $data_pasien_pemeriksaan,
-                        'verify_code' => 1,
-                    ));
-                } else {
-                    $this->render('hasil_pemeriksaan_umum', array(
-                        'verify_code' => 0,
-                        'verify_error' => 1,
-                        'verify_message' =>$result_api->message,
-                    ));
-                }
-
-            } else {
-                $this->render('hasil_pemeriksaan_umum', array(
-                    'verify_code' => 0,
-                    'verify_error' => 0,
-                ));
-            }
-
-        }
-
         public function actionDeposit()
         {
             $this->layout = 'wide_main';

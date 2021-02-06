@@ -79,10 +79,13 @@ class Pasien_sinkronController extends Controller
             LEFT JOIN agama ag ON ag.id_agama=p.id_agama
             ORDER BY p.nama
             ";
-        $query_Sinkron = "SELECT a.*
-                            FROM registration_patients a
-                            LEFT JOIN registrations b ON a.registration_id = b.id
-                            WHERE DATE_FORMAT(b.date, '%Y-%m-%d') <= '$tgl_awal'";
+        $query_Sinkron = "
+            SELECT a.*,b.code,c.type,c.name org_name
+            FROM registration_patients a
+            JOIN registrations b ON a.registration_id = b.id
+            JOIN organizations c on c.id=b.organization_id
+            WHERE DATE_FORMAT(b.date, '%Y-%m-%d') <= '$tgl_awal'
+            ORDER BY a.id desc";
         $pasien = Yii::app()->db->createCommand($query_view)->queryAll();
         $pasien_sinkron = Yii::app()->db2->createCommand($query_Sinkron)->queryAll();
         $this->render('read', array(
@@ -97,7 +100,7 @@ class Pasien_sinkronController extends Controller
 
         $query = "SELECT * 
             FROM registration_patients
-            WHERE id='$id'";
+            WHERE id='{$id}'";
         $data = Yii::app()->db2->createCommand($query)->queryRow();
         return $data;
     }
@@ -107,7 +110,7 @@ class Pasien_sinkronController extends Controller
     {
         $query = "SELECT count(*) 
             FROM sync_antrian
-            WHERE ='$id'";
+            WHERE id_antrian_reg_pasien='$id'";
         $data = Yii::app()->db->createCommand($query)->queryScalar();
         return $data;
     }

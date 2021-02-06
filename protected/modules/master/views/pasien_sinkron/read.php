@@ -31,6 +31,8 @@
                 <table style="margin :10px 0px" id="pasien-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
+                        <th>Kode Reg</th>
+                        <th>Asal</th>
                         <th>Nama</th>
                         <th>NIK</th>
                         <th>Test</th>
@@ -44,6 +46,8 @@
                     </thead>
                     <tfoot>
                     <tr>
+                        <th>Kode Reg</th>
+                        <th>Asal</th>
                         <th>Nama</th>
                         <th>NIK</th>
                         <th>Test</th>
@@ -60,6 +64,8 @@
                         foreach ($pasien_sinkron as $d):
                             ?>
                             <tr>
+                                <td><?php echo $d['code'] ?></td>
+                                <td><?php echo $d['type']=='Individu'?'Individu':$d['org_name'] ?></td>
                                 <td><?php echo $d['name'] ?></td>
                                 <td><?php echo $d['id_number'] ?></td>
                                 <td><?php echo $d['test_loop'] ?></td>
@@ -113,6 +119,10 @@
     $(document).ready(function () {
         $('#pasien-datatable').dataTable({
             "lengthChange": true,
+            "order": [
+                [ 9, "asc" ],
+                [ 0, "desc" ]
+            ]
         });
 
     });
