@@ -18,4 +18,5 @@
         'copyrightInfo' => 'Copyright &copy; 2009 by My Company.',
         // URL API Sistem Registrasi
         'api_registrasi' => 'https://antrian-simlab.localhost/api'
+        
     );

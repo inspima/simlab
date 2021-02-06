@@ -11,3 +11,4 @@ uploads/*
 .idea/simlab.iml
 .idea/modules.xml
 .idea/misc.xml
+protected/config/params.php
