@@ -54,16 +54,16 @@
             'db' => array(
                 'connectionString' => 'mysql:host=localhost;dbname=simlab',
                 'emulatePrepare' => true,
-                'username' => 'proyek',
-                'password' => 'Pr0y3k-dev',
+                'username' => 'root',
+                'password' => '',
                 'charset' => 'utf8',
             ),
             'db2' => array(
                 'class' => 'CDbConnection',
                 'connectionString' => 'mysql:host=localhost;dbname=antrian_simlab',
                 'emulatePrepare' => true,
-                'username' => 'proyek',
-                'password' => 'Pr0y3k-dev',
+                'username' => 'root',
+                'password' => '',
                 'charset' => 'utf8',
             ),
             'errorHandler' => array(

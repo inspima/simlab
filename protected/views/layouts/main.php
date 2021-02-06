@@ -270,7 +270,7 @@
     <div class="footer-inner">
         <div class="container" style="width: 95%">
             <div class="row">
-                <div class="span12"> &copy; 2014. ITD Universitas Airalngga - <a href="https://inspima.com">Inspima</a>.</div>
+                <div class="span12"> 2014 &copy; . ITD - Universitas Airlangga <span class="text-muted hide-phone pull-right"> Developed by <a target="_blank" href="https://inspima.com">Inspima</a></span>.</div>
                 <!-- /span12 -->
             </div>
             <!-- /row -->
