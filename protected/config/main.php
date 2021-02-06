@@ -52,18 +52,18 @@
              */
             // uncomment the following to use a MySQL database
             'db' => array(
-                'connectionString' => 'mysql:host=localhost;dbname=simlab',
+                'connectionString' => 'mysql:host=210.57.211.78;dbname=simlab_demo',
                 'emulatePrepare' => true,
                 'username' => 'root',
-                'password' => '',
+                'password' => '#mysql_itd_unair#',
                 'charset' => 'utf8',
             ),
             'db2' => array(
                 'class' => 'CDbConnection',
-                'connectionString' => 'mysql:host=localhost;dbname=antrian_simlab',
+                'connectionString' => 'mysql:host=210.57.211.78;dbname=antrian_simlab',
                 'emulatePrepare' => true,
                 'username' => 'root',
-                'password' => '',
+                'password' => '#mysql_itd_unair#',
                 'charset' => 'utf8',
             ),
             'errorHandler' => array(
