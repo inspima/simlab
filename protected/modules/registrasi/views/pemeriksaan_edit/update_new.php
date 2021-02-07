@@ -1264,6 +1264,11 @@
                                                         <?php echo Yii::app()->user->getFlash('success_notifikasi'); ?>
                                                     </div>
                                                 <?php endif; ?>
+                                                <?php if (Yii::app()->user->hasFlash('error_notifikasi')): ?>
+                                                    <div class="alert alert-danger">
+                                                        <?php echo Yii::app()->user->getFlash('error_notifikasi'); ?>
+                                                    </div>
+                                                <?php endif; ?>
                                                 <label class="alert alert-info"><b>Hasil Pemeriksaan sudah dimasukkan, notifikasi Whatsapp sudah siap dikirim. Silahkan cek kembali untuk kebenaran data</b></label>
                                                 <form class="form-horizontal form-validation" method="post" style="">
                                                     <input type="hidden" name="mode" value="kirim_whatsapp"/>

@@ -416,9 +416,15 @@
                                 'status' => 2
                             ]
                         );
+                        $response=json_decode($response);
+                        if(!empty($response)&&$response->status=='1'){
+                            Yii::app()->user->setFlash('success_notifikasi', 'Notifikasi WhatsApp berhasil dikirim');
+                        }else{
+                            Yii::app()->user->setFlash('error_notifikasi', 'Gagal kirim notifikasi, silahkan ulangi lagi');
+                        }
                     }
                     $step = 4;
-                    Yii::app()->user->setFlash('success_notifikasi', 'Notifikasi WhatsApp berhasil dikirim');
+
                 }
             }
             if (!empty($id_pasien)) {

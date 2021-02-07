@@ -26,7 +26,7 @@
             CURLOPT_CONNECTTIMEOUT => 300,
             CURLOPT_TIMEOUT => 300,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+            CURLOPT_USERAGENT => 'PostmanRuntime/7.26.8'
         );
 
         public static function mergeArray()
