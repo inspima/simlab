@@ -60,8 +60,8 @@
             order by bp.nama_bahan
             ";
                 $data_bahan_pasien = Yii::app()->db->createCommand($query_bahan_pasien)->queryAll();
+                $result[] = array_merge($d, array('data_sample' => $data_sample, 'data_bahan' => $data_bahan_pasien));
 
-                array_push($result, array_merge($d, array('data_sample' => $data_sample, 'data_bahan' => $data_bahan_pasien)));
             }
             return $result;
         }
@@ -123,27 +123,32 @@
             $search_arr = Yii::app()->request->getParam('search');
             $search = $search_arr['value'];
             $query_view = "
-            select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi
+            select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi,pemp.*
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
             join registrasi_pemeriksaan r on p.id_pasien=r.id_pasien
             left join instansi i on i.id_instansi=r.id_instansi
+            left join (
+                select id_registrasi_pemeriksaan,
+                   coalesce(sum(total_biaya),0) total_biaya,
+                   coalesce(sum(potongan),0) potongan,
+                   coalesce(sum(total_dibayar),0) total_bayar 
+                from pembayaran_pemeriksaan
+                group by id_registrasi_pemeriksaan
+            ) as pemp on pemp.id_registrasi_pemeriksaan=r.id_registrasi_pemeriksaan
             where lower(r.no_registrasi) like lower('%{$search}%') 
             or lower(r.waktu_registrasi) like lower('%{$search}%')
             or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
             or lower(p.nama)  like lower('%{$search}%')
             or lower(i.nama_instansi)  like lower('%{$search}%')
-            or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
             order by r.waktu_registrasi desc
             limit {$start},{$length}
             ";
 
             $query_view_search = "
-            select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi
+            select p.*,r.*,i.nama_instansi
             from pasien p
-            left join kota k on k.id_kota=p.id_kota_lahir
-            left join agama ag on ag.id_agama=p.id_agama
             join registrasi_pemeriksaan r on p.id_pasien=r.id_pasien
             left join instansi i on i.id_instansi=r.id_instansi
              where lower(r.no_registrasi) like lower('%{$search}%') 
@@ -162,11 +167,9 @@
             $no = 1;
             $result = array();
             foreach ($data as $d) {
-                // AUTO UPDATE PEMBAYARAN
-                $biaya_pembayaran = $this->getJumlahPembayaranPemeriksaan($d['id_registrasi_pemeriksaan']);
-                $data_pembayaran = $this->getPembayaranPemeriksaan($d['id_registrasi_pemeriksaan']);
                 // AUTO UPDATE DATA STATUS PEMBAYARAN
-                if (count($data_pembayaran) > 0 && $biaya_pembayaran['total_biaya'] == ($biaya_pembayaran['total_bayar'] + $biaya_pembayaran['potongan'])) {
+                if ($d['total_bayar'] > 0 && $d['total_biaya'] == ($d['total_bayar'] + $d['potongan'])) {
+                    $d['status_pembayaran'] = 1;
                     Yii::app()->db->createCommand("update registrasi_pemeriksaan set status_pembayaran=1 where id_registrasi_pemeriksaan='{$d['id_registrasi_pemeriksaan']}'")->query();
                 } else {
                     Yii::app()->db->createCommand("update registrasi_pemeriksaan set status_pembayaran=0 where id_registrasi_pemeriksaan='{$d['id_registrasi_pemeriksaan']}'")->query();
@@ -189,7 +192,7 @@
                     $action .= '<a class="btn registrasi-pemeriksaan-delete-button" title="Delete" id="' . $d['id_registrasi_pemeriksaan'] . '" ><i class="icon-remove"></i></a>';
                 }
 
-                array_push($result, array(
+                $result[] = [
                     $d['no_registrasi'],
                     $d['waktu_registrasi'],
                     $d['nama'] . '<br/>' . $d['nama_instansi'],
@@ -197,7 +200,7 @@
                     $status_registrasi,
                     $status_pembayaran,
                     $action
-                ));
+                ];
 
             }
             echo json_encode(array('draw' => $draw, 'recordsTotal' => $jumlah_all, 'recordsFiltered' => $jumlah_filtered, 'data' => $result));
@@ -265,7 +268,7 @@
                         $step = 2;
                         Yii::app()->user->setFlash('success_registrasi', 'Data Registrasi berhasil dimasukkan');
                     } else {
-                        print_r($pasien->getErrors());
+                        print_r($registrasi->getErrors());
                     }
                 } else if ($mode == 'pemeriksaan') {
                     $jumlah_data = Yii::app()->request->getPost('jumlah_data');
@@ -416,10 +419,10 @@
                                 'status' => 2
                             ]
                         );
-                        $response=json_decode($response);
-                        if(!empty($response)&&$response->status=='1'){
+                        $response = json_decode($response);
+                        if (!empty($response) && $response->status == '1') {
                             Yii::app()->user->setFlash('success_notifikasi', 'Notifikasi WhatsApp berhasil dikirim');
-                        }else{
+                        } else {
                             Yii::app()->user->setFlash('error_notifikasi', 'Gagal kirim notifikasi, silahkan ulangi lagi');
                         }
                     }
