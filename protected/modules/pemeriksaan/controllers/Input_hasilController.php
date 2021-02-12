@@ -83,7 +83,7 @@ class Input_hasilController extends Controller
             order by rps.waktu_masuk desc,s.nama_sample
             ";
             $data_sample = Yii::app()->db->createCommand($query_sample_pasien)->queryAll();
-            array_push($result, array_merge($d, array('data_sample' => $data_sample, 'data_child' => $data_pengujian_child)));
+            $result[]=array_merge($d, array('data_sample' => $data_sample, 'data_child' => $data_pengujian_child));
         }
         /*
           echo "<pre>";
@@ -118,7 +118,17 @@ class Input_hasilController extends Controller
         $search_arr = Yii::app()->request->getParam('search');
         $search = $search_arr['value'];
         $query_view = "
-            select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi
+            select 
+                p.nama,
+                k.nama_kota,
+                ag.nama_agama,
+                r.id_registrasi_pemeriksaan,
+                r.no_registrasi,
+                r.status_registrasi,
+                r.waktu_registrasi,
+                r.keluhan_diagnosa,
+                r.status_pembayaran,
+                i.nama_instansi
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
@@ -138,7 +148,7 @@ class Input_hasilController extends Controller
             ";
 
         $query_view_search = "
-            select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi
+            select count(*)
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
@@ -153,14 +163,12 @@ class Input_hasilController extends Controller
             or lower(p.nama)  like lower('%{$search}%')
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
-            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,id_registrasi_pemeriksaan
             order by r.waktu_registrasi desc
             ";
         $data = Yii::app()->db->createCommand($query_view)->queryAll();
 
-        $data_search = Yii::app()->db->createCommand($query_view_search)->queryAll();
+        $jumlah_filtered = Yii::app()->db->createCommand($query_view_search)->queryScalar();
         $jumlah_all = count($data);
-        $jumlah_filtered = count($data_search);
         $no = 1;
         $result = array();
         foreach ($data as $d) {
@@ -180,7 +188,7 @@ class Input_hasilController extends Controller
             }
             $action = '<a class="btn" title="Lihat Sample" href="' . Yii::app()->createUrl('pemeriksaan/input_hasil/input?reg=' . $d['id_registrasi_pemeriksaan']) . '" ><i class=" icon-list-alt"></i></a>';
 
-            array_push($result, array(
+            $result[]=[
                 $d['no_registrasi'],
                 $d['waktu_registrasi'],
                 $d['nama'] . '<br/><b>Instansi: </b>' . $d['nama_instansi'],
@@ -188,7 +196,7 @@ class Input_hasilController extends Controller
                 $status_registrasi,
                 $status_pembayaran,
                 $action
-            ));
+            ];
         }
         echo json_encode(array('draw' => $draw, 'recordsTotal' => $jumlah_all, 'recordsFiltered' => $jumlah_filtered, 'data' => $result));
     }
