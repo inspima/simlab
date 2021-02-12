@@ -170,7 +170,7 @@
 
             $query_view_search = "
             SELECT
-                r.id_registrasi_pemeriksaan
+                count(*)
             FROM
                 pasien p
                 JOIN registrasi_pemeriksaan r ON p.id_pasien = r.id_pasien
@@ -185,9 +185,8 @@
             ";
             $data = Yii::app()->db->createCommand($query_view)->queryAll();
 
-            $data_search = Yii::app()->db->createCommand($query_view_search)->queryAll();
+            $jumlah_filtered = Yii::app()->db->createCommand($query_view_search)->queryScalar();
             $jumlah_all = RegistrasiPemeriksaan::model()->count();
-            $jumlah_filtered = count($data_search);
             $no = 1;
             $result = array();
             foreach ($data as $d) {
