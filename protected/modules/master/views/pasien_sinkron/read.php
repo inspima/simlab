@@ -65,14 +65,14 @@
                             ?>
                             <tr>
                                 <td><?php echo $d['code'] ?></td>
-                                <td><?php echo $d['type']=='Individu'?'Individu':$d['org_name'] ?></td>
+                                <td><?php echo $d['type'] == 'Individu' ? 'Individu' : $d['org_name'] ?></td>
                                 <td><?php echo $d['name'] ?></td>
                                 <td><?php echo $d['id_number'] ?></td>
                                 <td><?php echo $d['test_loop'] ?></td>
                                 <td><?php echo date('d-m-Y', strtotime($d['born_date'])) . " (" . $d['age'] . ")"; ?></td>
-                                <td><?php if ($d['gender'] == 1) {
+                                <td><?php if ($d['gender'] == 1 || $d['gender'] == 'Laki-Laki') {
                                         echo "Laki - Laki";
-                                    } else if ($d['gender'] == 2) {
+                                    } else if ($d['gender'] == 2 || $d['gender'] == 'Perempuan') {
                                         echo "Perempuan";
                                     } else {
                                         echo "NOT SET";
@@ -120,8 +120,8 @@
         $('#pasien-datatable').dataTable({
             "lengthChange": true,
             "order": [
-                [ 9, "asc" ],
-                [ 0, "desc" ]
+                [9, "asc"],
+                [0, "desc"]
             ]
         });
 
