@@ -85,6 +85,7 @@ class Pasien_sinkronController extends Controller
             JOIN registrations b ON a.registration_id = b.id
             JOIN organizations c on c.id=b.organization_id
             WHERE DATE_FORMAT(b.date, '%Y-%m-%d') <= '$tgl_awal'
+            AND b.status>=1
             ORDER BY a.id desc";
         $pasien = Yii::app()->db->createCommand($query_view)->queryAll();
         $pasien_sinkron = Yii::app()->db2->createCommand($query_Sinkron)->queryAll();
