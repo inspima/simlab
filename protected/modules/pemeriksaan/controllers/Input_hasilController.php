@@ -128,7 +128,8 @@ class Input_hasilController extends Controller
                 r.waktu_registrasi,
                 r.keluhan_diagnosa,
                 r.status_pembayaran,
-                i.nama_instansi
+                i.nama_instansi,
+                pemp.* 
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
@@ -136,13 +137,30 @@ class Input_hasilController extends Controller
             join pasien_pemeriksaan pp on pp.id_registrasi_pemeriksaan=r.id_registrasi_pemeriksaan
             join pengujian peng on peng.id_pengujian=pp.id_pengujian and peng.id_unit='{$id_unit_user}'
             left join instansi i on i.id_instansi=r.id_instansi
+            LEFT JOIN (
+                    SELECT
+                        id_registrasi_pemeriksaan,
+                        COALESCE ( sum( total_biaya ), 0 ) total_biaya,
+                        COALESCE ( sum( potongan ), 0 ) potongan,
+                        COALESCE ( sum( total_dibayar ), 0 ) total_bayar 
+                    FROM
+                        pembayaran_pemeriksaan 
+                    WHERE
+                        status_pembayaran = '1' 
+                    GROUP BY
+                        id_registrasi_pemeriksaan 
+                    ORDER BY
+                        id_registrasi_pemeriksaan DESC 
+                        LIMIT {$start},
+                        {$length} 
+                        ) 
+                AS pemp ON pemp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan
             where lower(r.no_registrasi) like lower('%{$search}%') 
             or lower(r.waktu_registrasi) like lower('%{$search}%') 
             or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
             or lower(p.nama)  like lower('%{$search}%')
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
-            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,id_registrasi_pemeriksaan
             order by r.waktu_registrasi desc
             limit {$start},{$length}
             ";
@@ -172,6 +190,13 @@ class Input_hasilController extends Controller
         $no = 1;
         $result = array();
         foreach ($data as $d) {
+            // AUTO UPDATE DATA STATUS PEMBAYARAN
+            if ($d['total_bayar'] > 0 && $d['total_biaya'] == ($d['total_bayar'] + $d['potongan'])) {
+                $d['status_pembayaran'] = 1;
+                Yii::app()->db->createCommand("update registrasi_pemeriksaan set status_pembayaran=1 where id_registrasi_pemeriksaan='{$d['id_registrasi_pemeriksaan']}'")->query();
+            } else {
+                Yii::app()->db->createCommand("update registrasi_pemeriksaan set status_pembayaran=0 where id_registrasi_pemeriksaan='{$d['id_registrasi_pemeriksaan']}'")->query();
+            }
             $status_registrasi = '';
             $status_pembayaran = '';
             if ($d['status_registrasi'] == 0) {
