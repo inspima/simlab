@@ -129,7 +129,9 @@ class Input_hasilController extends Controller
                 r.keluhan_diagnosa,
                 r.status_pembayaran,
                 i.nama_instansi,
-                pemp.* 
+                pemp.total_biaya,
+                pemp.potongan,
+                pemp.total_bayar
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
@@ -182,6 +184,7 @@ class Input_hasilController extends Controller
             or lower(i.nama_instansi)  like lower('%{$search}%')
             or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
             order by r.waktu_registrasi desc
+            limit {$start},{$length}
             ";
         $data = Yii::app()->db->createCommand($query_view)->queryAll();
 

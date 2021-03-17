@@ -122,119 +122,68 @@
             $draw = Yii::app()->request->getParam('draw');
             $search_arr = Yii::app()->request->getParam('search');
             $search = $search_arr['value'];
-            if (!empty($search)) {
-                $query_view = "
-                    SELECT
-                        p.nama,
-                        k.nama_kota,
-                        ag.nama_agama,
-                        r.id_registrasi_pemeriksaan,
-                        r.no_registrasi,
-                        r.status_registrasi,
-                        r.waktu_registrasi,
-                        r.keluhan_diagnosa,
-                        r.status_pembayaran,
-                        i.nama_instansi,
-                        pemp.total_biaya,
-                        pemp.potongan,
-                        pemp.total_bayar
-                    FROM
-                        pasien p
-                        LEFT JOIN kota k ON k.id_kota = p.id_kota_lahir
-                        LEFT JOIN agama ag ON ag.id_agama = p.id_agama
-                        JOIN registrasi_pemeriksaan r ON p.id_pasien = r.id_pasien
-                        LEFT JOIN instansi i ON i.id_instansi = r.id_instansi
-                        LEFT JOIN (
-                            SELECT
-                                id_registrasi_pemeriksaan,
-                                COALESCE ( sum( total_biaya ), 0 ) total_biaya,
-                                COALESCE ( sum( potongan ), 0 ) potongan,
-                                COALESCE ( sum( total_dibayar ), 0 ) total_bayar 
-                            FROM
-                                pembayaran_pemeriksaan 
-                            WHERE
-                                status_pembayaran = '1' 
-                            GROUP BY
-                                id_registrasi_pemeriksaan 
-                            ORDER BY
-                                id_registrasi_pemeriksaan DESC 
-                            limit 0,100
-                                ) 
-                        AS pemp ON pemp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan 
-                    where lower(r.no_registrasi) like lower('%{$search}%') 
-                    or lower(r.waktu_registrasi) like lower('%{$search}%')
-                    or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
-                    or lower(p.nama)  like lower('%{$search}%')
-                    or lower(i.nama_instansi)  like lower('%{$search}%')
-                    order by r.waktu_registrasi desc
-                    limit 0,100
+            $query_view = "
+                SELECT
+                    p.nama,
+                    k.nama_kota,
+                    ag.nama_agama,
+                    r.id_registrasi_pemeriksaan,
+                    r.no_registrasi,
+                    r.status_registrasi,
+                    r.waktu_registrasi,
+                    r.keluhan_diagnosa,
+                    r.status_pembayaran,
+                    i.nama_instansi,
+                    pemp.total_biaya,
+                    pemp.potongan,
+                    pemp.total_bayar
+                FROM
+                    pasien p
+                    LEFT JOIN kota k ON k.id_kota = p.id_kota_lahir
+                    LEFT JOIN agama ag ON ag.id_agama = p.id_agama
+                    JOIN registrasi_pemeriksaan r ON p.id_pasien = r.id_pasien
+                    LEFT JOIN instansi i ON i.id_instansi = r.id_instansi
+                    LEFT JOIN (
+                        SELECT
+                            id_registrasi_pemeriksaan,
+                            COALESCE ( sum( total_biaya ), 0 ) total_biaya,
+                            COALESCE ( sum( potongan ), 0 ) potongan,
+                            COALESCE ( sum( total_dibayar ), 0 ) total_bayar 
+                        FROM
+                            pembayaran_pemeriksaan 
+                        WHERE
+                            status_pembayaran = '1' 
+                        GROUP BY
+                            id_registrasi_pemeriksaan 
+                        ORDER BY
+                            id_registrasi_pemeriksaan DESC 
+                        limit {$start},{$length}
+                            ) 
+                    AS pemp ON pemp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan 
+                where lower(r.no_registrasi) like lower('%{$search}%') 
+                or lower(r.waktu_registrasi) like lower('%{$search}%')
+                or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
+                or lower(p.nama)  like lower('%{$search}%')
+                or lower(i.nama_instansi)  like lower('%{$search}%')
+                order by r.waktu_registrasi desc
+                limit {$start},{$length}
             ";
-            } else {
-                $query_view = "
-                    SELECT
-                        p.nama,
-                        k.nama_kota,
-                        ag.nama_agama,
-                        r.id_registrasi_pemeriksaan,
-                        r.no_registrasi,
-                        r.status_registrasi,
-                        r.waktu_registrasi,
-                        r.keluhan_diagnosa,
-                        r.status_pembayaran,
-                        i.nama_instansi,
-                        pemp.total_biaya,
-                        pemp.potongan,
-                        pemp.total_bayar
-                    FROM
-                        pasien p
-                        LEFT JOIN kota k ON k.id_kota = p.id_kota_lahir
-                        LEFT JOIN agama ag ON ag.id_agama = p.id_agama
-                        JOIN registrasi_pemeriksaan r ON p.id_pasien = r.id_pasien
-                        LEFT JOIN instansi i ON i.id_instansi = r.id_instansi
-                        LEFT JOIN (
-                            SELECT
-                                id_registrasi_pemeriksaan,
-                                COALESCE ( sum( total_biaya ), 0 ) total_biaya,
-                                COALESCE ( sum( potongan ), 0 ) potongan,
-                                COALESCE ( sum( total_dibayar ), 0 ) total_bayar 
-                            FROM
-                                pembayaran_pemeriksaan 
-                            WHERE
-                                status_pembayaran = '1' 
-                            GROUP BY
-                                id_registrasi_pemeriksaan 
-                            ORDER BY
-                                id_registrasi_pemeriksaan DESC 
-                                LIMIT {$start},
-                                {$length} 
-                                ) 
-                        AS pemp ON pemp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan 
-                    where lower(r.no_registrasi) like lower('%{$search}%') 
-                    or lower(r.waktu_registrasi) like lower('%{$search}%')
-                    or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
-                    or lower(p.nama)  like lower('%{$search}%')
-                    or lower(i.nama_instansi)  like lower('%{$search}%')
-                    order by r.waktu_registrasi desc
-                    limit {$start},{$length}
-            ";
-            }
-
             $query_view_search = "
-            SELECT
-                count(*)
-            FROM
-                pasien p
-                JOIN registrasi_pemeriksaan r ON p.id_pasien = r.id_pasien
-                LEFT JOIN instansi i ON i.id_instansi = r.id_instansi 
-            where lower(r.no_registrasi) like lower('%{$search}%') 
-            or lower(r.waktu_registrasi) like lower('%{$search}%')
-            or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
-            or lower(p.nama)  like lower('%{$search}%')
-            or lower(i.nama_instansi)  like lower('%{$search}%')
-            or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
-            order by r.waktu_registrasi desc
-            ";
-
+                SELECT
+                    count(*)
+                FROM
+                    pasien p
+                    JOIN registrasi_pemeriksaan r ON p.id_pasien = r.id_pasien
+                    LEFT JOIN instansi i ON i.id_instansi = r.id_instansi 
+                where lower(r.no_registrasi) like lower('%{$search}%') 
+                or lower(r.waktu_registrasi) like lower('%{$search}%')
+                or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
+                or lower(p.nama)  like lower('%{$search}%')
+                or lower(i.nama_instansi)  like lower('%{$search}%')
+                or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
+                order by r.waktu_registrasi desc
+                limit {$start},{$length}
+                ";
             $data = Yii::app()->db->createCommand($query_view)->queryAll();
             $jumlah_filtered = Yii::app()->db->createCommand($query_view_search)->queryScalar();
             $jumlah_all = RegistrasiPemeriksaan::model()->count();
