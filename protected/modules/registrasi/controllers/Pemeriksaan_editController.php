@@ -158,6 +158,7 @@
                                 id_registrasi_pemeriksaan 
                             ORDER BY
                                 id_registrasi_pemeriksaan DESC 
+                            limit 0,100
                                 ) 
                         AS pemp ON pemp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan 
                     where lower(r.no_registrasi) like lower('%{$search}%') 
@@ -166,6 +167,7 @@
                     or lower(p.nama)  like lower('%{$search}%')
                     or lower(i.nama_instansi)  like lower('%{$search}%')
                     order by r.waktu_registrasi desc
+                    limit 0,100
             ";
             } else {
                 $query_view = "
