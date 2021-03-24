@@ -412,13 +412,14 @@
                     $step = 4;
                 } else if ($mode == 'pembayaran') {
                     $id_registrasi = Yii::app()->request->getPost('id_registrasi');
+                    $tgl_jatuh_tempo=Yii::app()->request->getPost('tgl_jatuh_tempo');
                     $pembayaran = new PembayaranPemeriksaan;
                     $pembayaran->id_registrasi_pemeriksaan = $id_registrasi;
                     $pembayaran->waktu_pembayaran = Yii::app()->request->getPost('waktu_pembayaran');
                     $pembayaran->total_biaya = Yii::app()->request->getPost('total_biaya');
                     $pembayaran->potongan = Yii::app()->request->getPost('potongan');
                     $pembayaran->total_dibayar = Yii::app()->request->getPost('total_dibayar');
-                    if (!empty(Yii::app()->request->getPost('tgl_jatuh_tempo'))) {
+                    if (!empty($tgl_jatuh_tempo)) {
                         $pembayaran->tgl_jatuh_tempo = Yii::app()->request->getPost('tgl_jatuh_tempo');
                     }
                     $pembayaran->status_pembayaran = Yii::app()->request->getPost('status_pembayaran');
