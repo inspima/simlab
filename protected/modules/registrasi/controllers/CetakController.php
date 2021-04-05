@@ -333,7 +333,7 @@
             $id_unit = 6; // TDDC
             $q_unit = $id_unit != '' ? "and id_unit='{$id_unit}'" : "";
             $user_login = Yii::app()->db->createCommand("select * from pegawai where id_user='{$id_user_login}'")->queryRow();
-            $user_pj = Yii::app()->db->createCommand("select * from pegawai where id_pegawai='55'")->queryRow();
+            $user_pj = Yii::app()->db->createCommand("select * from pegawai where id_pegawai='73'")->queryRow();
 
             $data_pasien_pemeriksaan = $this->getPasienPemeriksanValidasi($id_registrasi);
             $data_registrasi = $this->getDataRegistrasiPemeriksaan($id_registrasi);
