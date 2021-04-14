@@ -1,40 +1,26 @@
 <?php
-include 'breadcumbs.php';
+    // AMBIL TEMPLATE USER
+    $model_user = User::model()->find()->findByAttributes(array('id_user' => Yii::app()->user->id));
 ?>
-<div class="row-fluid">
+    <div class="row-fluid">
 
-    <div class="span12">
-        <div class="widget">
-            <div class="widget-header">
-                <i class=" icon-tasks"></i>
-                <h3>Home</h3>
-            </div> <!-- /widget-header -->
-            <div class="widget-content">    
-                <div class="error-container">
-                    <h2>Selamat Datang</h2>
+        <div class="span12">
+            <div class="widget"> <!-- /widget-header -->
+                <div class="widget-header" style="background: #e7e7e7 !important">
+                    <h3></h3>
+                </div>
+                <div class="widget-content" style="text-align: center">
+                    <h2 style="margin-top: 30px;color: #0f79ad">Hi, <?php echo $model_user['nama_user']; ?></h2>
+                    <h3 style="">Selamat Datang</h3>
+                    <p style="margin: 20px">
+                        <img width="30%" src="<?php echo Yii::app()->baseUrl; ?>/img/dashboard.svg">
+                    </p>
+                </div>
 
+            </div> <!-- /widget-content -->
+        </div> <!-- /widget -->
 
-                    <div class="error-actions">
-                        <a href="#" class="btn btn-large btn-primary">
-                            <i class="icon-chevron-left"></i>
-                            &nbsp;
-                            SISTEM INFORMASI MANAJEMEN LABORATORIUM				
-                        </a>
-
-                        <br/>
-                        <br/>
-                        <br/>
-                        <br/>
-
-                    </div> <!-- /error-actions -->
-
-                </div> <!-- /error-container -->	
-            </div>
-
-        </div> <!-- /widget-content -->
-    </div> <!-- /widget -->
-
-</div> <!-- /row -->
+    </div> <!-- /row -->
 <?php
-include 'plugins.php';
+    include 'plugins.php';
 ?>

@@ -130,50 +130,57 @@
                 } else if ($mode == 'registrasi') {
                     $id_registrasi = Yii::app()->request->getPost('id_registrasi');
                     $id_pasien = Yii::app()->request->getPost('pasien');
+                    $no_registrasi = Yii::app()->request->getPost('no_registrasi');
                     if (!empty($id_registrasi)) {
                         $registrasi = RegistrasiPemeriksaan::model()->findByPk($id_registrasi);
                     } else {
                         $registrasi = new RegistrasiPemeriksaan;
                     }
-
-                    $registrasi->id_pasien = $id_pasien;
-                    $registrasi->id_pasien_tipe = Yii::app()->request->getPost('pasien_tipe');
-                    $registrasi->id_dokter_pengirim = Yii::app()->request->getPost('dokter_pengirim');
-                    $registrasi->id_instansi = Yii::app()->request->getPost('instansi');
-                    $registrasi->id_petugas_penerima = $id_user_login;
-                    $registrasi->no_registrasi = Yii::app()->request->getPost('no_registrasi');
-                    $registrasi->waktu_registrasi = Yii::app()->request->getPost('waktu_registrasi');
-                    $registrasi->keluhan_diagnosa = Yii::app()->request->getPost('keluhan');
-                    $registrasi->keterangan_registrasi = Yii::app()->request->getPost('keterangan');
-                    $registrasi->uji_keperluan = Yii::app()->request->getPost('uji_keperluan');
-                    $registrasi->uji_parameter = Yii::app()->request->getPost('uji_parameter');
-                    $registrasi->uji_metode = Yii::app()->request->getPost('uji_metode');
-                    $registrasi->status_registrasi = 0;
-                    $registrasi->status_pembayaran = 0;
-                    if ($registrasi->save()) {
-                        $id_registrasi = $registrasi->id_registrasi_pemeriksaan;
-                        $step = 2;
-                        // Sync update status pasien antrian
-                        $query_cek_integrasi = "SELECT * 
-                    FROM sync_antrian
-                    WHERE id_pasien=' $id_pasien'";
-                        $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
-                        if (!empty($data)) {
-                            Yii::app()->db2->createCommand()
-                                ->update(
-                                    'registration_patients',
-                                    array(
-                                        'simlab_reg_code' => $registrasi->no_registrasi,
-                                        'sync_status' => 1,
-                                    ),
-                                    'id=:id',
-                                    array(':id' => $data['id_antrian_reg_pasien'])
-                                );
-                        }
-                        Yii::app()->user->setFlash('success_registrasi', 'Data Registrasi berhasil dimasukkan');
+                    $cek_data_by_nomor_registrasi = Yii::app()->db->createCommand("select * from registrasi_pemeriksaan where no_registrasi='{$no_registrasi}'")->queryRow();
+                    if (!empty($cek_data_by_nomor_registrasi) && empty($id_registrasi)) {
+                        Yii::app()->user->setFlash('error_registrasi', 'Nomor registrasi ' . $no_registrasi . ' sudah digunakan');
                     } else {
-                        print_r($registrasi->getErrors());
+                        $registrasi->id_pasien = $id_pasien;
+                        $registrasi->id_pasien_tipe = Yii::app()->request->getPost('pasien_tipe');
+                        $registrasi->id_dokter_pengirim = Yii::app()->request->getPost('dokter_pengirim');
+                        $registrasi->id_instansi = Yii::app()->request->getPost('instansi');
+                        $registrasi->id_petugas_penerima = $id_user_login;
+                        $registrasi->no_registrasi = $no_registrasi;
+                        $registrasi->waktu_registrasi = Yii::app()->request->getPost('waktu_registrasi');
+                        $registrasi->keluhan_diagnosa = Yii::app()->request->getPost('keluhan');
+                        $registrasi->keterangan_registrasi = Yii::app()->request->getPost('keterangan');
+                        $registrasi->uji_keperluan = Yii::app()->request->getPost('uji_keperluan');
+                        $registrasi->uji_parameter = Yii::app()->request->getPost('uji_parameter');
+                        $registrasi->uji_metode = Yii::app()->request->getPost('uji_metode');
+                        $registrasi->status_registrasi = 0;
+                        $registrasi->status_pembayaran = 0;
+                        if ($registrasi->save()) {
+                            $id_registrasi = $registrasi->id_registrasi_pemeriksaan;
+                            $step = 2;
+                            // Sync update status pasien antrian
+                            $query_cek_integrasi = "SELECT * 
+                            FROM sync_antrian
+                            WHERE id_pasien=' $id_pasien'
+                            ";
+                            $data = Yii::app()->db->createCommand($query_cek_integrasi)->queryRow();
+                            if (!empty($data)) {
+                                Yii::app()->db2->createCommand()
+                                    ->update(
+                                        'registration_patients',
+                                        array(
+                                            'simlab_reg_code' => $registrasi->no_registrasi,
+                                            'sync_status' => 1,
+                                        ),
+                                        'id=:id',
+                                        array(':id' => $data['id_antrian_reg_pasien'])
+                                    );
+                            }
+                            Yii::app()->user->setFlash('success_registrasi', 'Data Registrasi berhasil dimasukkan');
+                        } else {
+                            Yii::app()->user->setFlash('error_registrasi', $registrasi->getErrors());
+                        }
                     }
+
                 } else if ($mode == 'pemeriksaan') {
                     $jumlah_data = Yii::app()->request->getPost('jumlah_data');
                     $id_registrasi = Yii::app()->request->getPost('id_registrasi');

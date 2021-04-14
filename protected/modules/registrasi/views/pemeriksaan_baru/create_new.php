@@ -31,6 +31,11 @@ include 'breadcumbs.php';
                                                 <?php echo Yii::app()->user->getFlash('success_pasien'); ?>
                                             </div>
                                         <?php endif; ?>
+                                        <?php if (Yii::app()->user->hasFlash('error_registrasi')): ?>
+                                            <div class="alert alert-danger">
+                                                <?php echo Yii::app()->user->getFlash('error_registrasi'); ?>
+                                            </div>
+                                        <?php endif; ?>
                                         <a href="#modal-pasien" role="button" style="margin: 10px 0px" class="btn" data-toggle="modal"><i class="icon-plus"></i> Tambah Pasien</a>
                                         <div id="modal-pasien" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-pasienLabel" aria-hidden="true">
                                             <div class="modal-header">

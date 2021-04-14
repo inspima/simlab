@@ -33,7 +33,8 @@ LEFT JOIN (
 		registrasi_pasien_sample a
 	LEFT JOIN sample b ON a.id_sample = b.id_sample
 	GROUP BY
-		a.id_registrasi_pemeriksaan
+		a.id_registrasi_pemeriksaan,
+		a.jumlah_sample
 ) e ON e.id_registrasi_pemeriksaan = b.id_registrasi_pemeriksaan
 WHERE
 	a.id_pengujian = '583'
