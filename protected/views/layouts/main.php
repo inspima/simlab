@@ -83,7 +83,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="/"><?php echo CHtml::encode(Yii::app()->name); ?></a>
+            <a class="brand" href="<?php echo Yii::app()->getBaseUrl(true);?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
             <div class="nav-collapse">
                 <?php
                     // SUBMENU NOTIFIKASI
