@@ -380,15 +380,18 @@
                     $id_registrasi = Yii::app()->request->getPost('id_registrasi');
                     for ($i = 1; $i < $jumlah_data; $i++) {
                         $id_pasien_pemeriksaan = Yii::app()->request->getPost('pasien_pemeriksaan_' . $i);
+                        $tgl_selesai_pemeriksaan = Yii::app()->request->getPost('tgl_selesai_pasien_pemeriksaan' . $i);
                         $pasien_pemeriksaan = PasienPemeriksaan::model()->findByPk($id_pasien_pemeriksaan);
                         $pasien_pemeriksaan->besar_tarif = Yii::app()->request->getPost('tp_pasien_pemeriksaan_' . $i);
                         $pasien_pemeriksaan->potongan = Yii::app()->request->getPost('pot_pasien_pemeriksaan_' . $i);
-                        $pasien_pemeriksaan->tgl_selesai = Yii::app()->request->getPost('tgl_selesai_pasien_pemeriksaan' . $i);
+                        if (!empty($tgl_selesai_pemeriksaan)) {
+                            $pasien_pemeriksaan->tgl_selesai = $tgl_selesai_pemeriksaan;
+                        }
                         $pasien_pemeriksaan->save();
                         // UPDATE SAMPLE
                         $sample = Yii::app()->request->getPost('sample' . $i);
                         Yii::app()->db->createCommand("delete from pemeriksaan_sample where id_pasien_pemeriksaan='{$id_pasien_pemeriksaan}'")->query();
-                        if (count($sample) > 0) {
+                        if (!empty($sample)) {
                             foreach ($sample as $sp) {
                                 $pemeriksaan_sample = new PemeriksaanSample;
                                 $pemeriksaan_sample->id_pasien_pemeriksaan = $id_pasien_pemeriksaan;
@@ -399,7 +402,7 @@
                         //UPDATE BAHAN
                         $bahan = Yii::app()->request->getPost('bahan' . $i);
                         Yii::app()->db->createCommand("delete from bahan_pengujian_pasien where id_pasien_pemeriksaan='{$id_pasien_pemeriksaan}'")->query();
-                        if (count($bahan) > 0) {
+                        if (!empty($bahan)) {
                             foreach ($bahan as $b) {
                                 $bahan_pengujian_pasien = new BahanPengujianPasien;
                                 $bahan_pengujian_pasien->id_pasien_pemeriksaan = $id_pasien_pemeriksaan;
@@ -412,7 +415,7 @@
                     $step = 4;
                 } else if ($mode == 'pembayaran') {
                     $id_registrasi = Yii::app()->request->getPost('id_registrasi');
-                    $tgl_jatuh_tempo=Yii::app()->request->getPost('tgl_jatuh_tempo');
+                    $tgl_jatuh_tempo = Yii::app()->request->getPost('tgl_jatuh_tempo');
                     $pembayaran = new PembayaranPemeriksaan;
                     $pembayaran->id_registrasi_pemeriksaan = $id_registrasi;
                     $pembayaran->waktu_pembayaran = Yii::app()->request->getPost('waktu_pembayaran');
