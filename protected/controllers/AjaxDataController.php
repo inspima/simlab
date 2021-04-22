@@ -324,7 +324,7 @@
         {
             $this->layout = false;
             $increement_code = 1;
-            $arr_instansi_increment_failed = [196];
+            $arr_instansi_increment_failed = [196,458];
             $id_instansi = Yii::app()->request->getPost('id_instansi');
             $instansi = Yii::app()->db->createCommand("select * from instansi where id_instansi='{$id_instansi}'")->queryRow();
             $jumlah_pemeriksaan_instansi = Yii::app()->db->createCommand("select count(*) from registrasi_pemeriksaan where id_instansi='{$id_instansi}'")->queryScalar();
