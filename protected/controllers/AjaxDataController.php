@@ -324,17 +324,13 @@
         {
             $this->layout = false;
             $increement_code = 1;
-            $arr_instansi_increment_failed = [196,458,34];
             $id_instansi = Yii::app()->request->getPost('id_instansi');
             $instansi = Yii::app()->db->createCommand("select * from instansi where id_instansi='{$id_instansi}'")->queryRow();
             $jumlah_pemeriksaan_instansi = Yii::app()->db->createCommand("select count(*) from registrasi_pemeriksaan where id_instansi='{$id_instansi}'")->queryScalar();
-            if (in_array($id_instansi, $arr_instansi_increment_failed)) {
-                $jumlah_pemeriksaan_instansi += 1;
-            }
             $year_month = date('Ym');
             echo json_encode(
                 array(
-                    'no_registrasi' => str_pad($instansi['kode_instansi'], 4, "0", STR_PAD_LEFT) . '-' . $year_month . '-' . str_pad($jumlah_pemeriksaan_instansi + $increement_code, 10, "0", STR_PAD_LEFT)
+                    'no_registrasi' => str_pad($instansi['kode_instansi'], 4, "0", STR_PAD_LEFT) . '-' . $year_month . '-' .rand(10,99). str_pad($jumlah_pemeriksaan_instansi + $increement_code, 8, "0", STR_PAD_LEFT)
                 )
             );
             Yii::app()->end();
