@@ -153,29 +153,18 @@
             $search_arr = Yii::app()->request->getParam('search');
             $search = $search_arr['value'];
             $query_view = "
-        select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi, pxp.status_validasi
-        from pasien p
-        left join kota k on k.id_kota=p.id_kota_lahir
-        left join agama ag on ag.id_agama=p.id_agama
-        join registrasi_pemeriksaan r on p.id_pasien=r.id_pasien
-        left join pasien_pemeriksaan pxp on pxp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan
-        left join instansi i on i.id_instansi=r.id_instansi
-        where
-        (
-        lower(r.no_registrasi) like lower('%{$search}%') 
-        or lower(r.waktu_registrasi) like lower('%{$search}%')
-        or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
-        or lower(p.nama)  like lower('%{$search}%')
-        or lower(i.nama_instansi)  like lower('%{$search}%')
-        or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
-        )
-        group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,r.id_registrasi_pemeriksaan
-        order by r.waktu_registrasi desc
-        limit {$start},{$length}
-            ";
-            //var_dump($query_view);        die();
-            $query_view_search = "
-            select p.*,k.nama_kota,ag.nama_agama,r.*,i.nama_instansi,pxp.status_validasi 
+            select 
+                p.nama,
+                k.nama_kota,
+                ag.nama_agama,
+                r.no_registrasi,
+                r.keluhan_diagnosa,
+                r.waktu_registrasi,
+                r.status_registrasi,
+                r.status_pembayaran,
+                r.id_registrasi_pemeriksaan,
+                i.nama_instansi,
+                pxp.status_validasi 
             from pasien p
             left join kota k on k.id_kota=p.id_kota_lahir
             left join agama ag on ag.id_agama=p.id_agama
@@ -184,14 +173,47 @@
             left join instansi i on i.id_instansi=r.id_instansi
             where
             (
-            lower(r.no_registrasi) like lower('%{$search}%') 
-            or lower(r.waktu_registrasi) like lower('%{$search}%')
-            or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
-            or lower(p.nama)  like lower('%{$search}%')
-            or lower(i.nama_instansi)  like lower('%{$search}%')
-            or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
+                lower(r.no_registrasi) like lower('%{$search}%') 
+                or lower(r.waktu_registrasi) like lower('%{$search}%')
+                or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
+                or lower(p.nama)  like lower('%{$search}%')
+                or lower(i.nama_instansi)  like lower('%{$search}%')
+                or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
             )
-            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,id_registrasi_pemeriksaan
+            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,r.id_registrasi_pemeriksaan, pxp.status_validasi
+            order by r.waktu_registrasi desc
+            limit {$start},{$length}
+            ";
+            // var_dump($query_view);        die();
+            $query_view_search = "
+            select 
+                p.nama,
+                k.nama_kota,
+                ag.nama_agama,
+                r.no_registrasi,
+                r.keluhan_diagnosa,
+                r.waktu_registrasi,
+                r.status_registrasi,
+                r.status_pembayaran,
+                r.id_registrasi_pemeriksaan,
+                i.nama_instansi,
+                pxp.status_validasi 
+            from pasien p
+            left join kota k on k.id_kota=p.id_kota_lahir
+            left join agama ag on ag.id_agama=p.id_agama
+            join registrasi_pemeriksaan r on p.id_pasien=r.id_pasien
+            left join pasien_pemeriksaan pxp on pxp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan
+            left join instansi i on i.id_instansi=r.id_instansi
+            where
+            (
+                lower(r.no_registrasi) like lower('%{$search}%') 
+                or lower(r.waktu_registrasi) like lower('%{$search}%')
+                or lower(r.id_registrasi_pemeriksaan) like lower('%{$search}%')
+                or lower(p.nama)  like lower('%{$search}%')
+                or lower(i.nama_instansi)  like lower('%{$search}%')
+                or lower(r.keluhan_diagnosa)  like lower('%{$search}%')
+            )
+            group by no_registrasi,waktu_registrasi,nama,nama_instansi,keluhan_diagnosa,status_registrasi,status_pembayaran,r.id_registrasi_pemeriksaan, pxp.status_validasi
             order by r.waktu_registrasi desc
             ";
 
