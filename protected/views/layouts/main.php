@@ -201,7 +201,7 @@
                 foreach ($menu as $mu) {
 
                     // CEK SUBMENU
-                    $query_submenu = "select * from menu where id_parent_menu='{$mu['id_menu']}' and id_menu in (select id_menu from template_menu where id_template='" . $model_template_user->id_template . "') and is_active=1";
+                    $query_submenu = "select * from menu where id_parent_menu='{$mu['id_menu']}' and id_menu in (select id_menu from template_menu where id_template='" . $model_template_user->id_template . "') and is_active=1 order by menu.order";
                     $submenu = Yii::app()->db->createCommand($query_submenu)->queryAll();
                     if (count($submenu) > 0) {
                         $array_submenu = array();

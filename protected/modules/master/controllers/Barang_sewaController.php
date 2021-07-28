@@ -146,6 +146,8 @@ class Barang_sewaController extends Controller {
     
     public function actionBarcode($id) {
         $this->layout = false;
+        Yii::import("application.extensions.barcode.*");
+        Yii::import('ext.qrcode.QRCode');
         $id = Yii::app()->request->getQuery('id');
         $width  = 180;  
         //Height of the barcode image.
@@ -156,9 +158,11 @@ class Barang_sewaController extends Controller {
         $text =1;
         // Location of barcode image storage.
         $location = Yii::getPathOfAlias("webroot").'/barcode/'.$id.'.jpg';
-        Yii::import("application.extensions.barcode.*");                      
         barcode::Barcode39($id, $width , $height , $quality, $text, $location);
-        //$this->redirect('view?id='.$id);
+        // QR Code
+        $code=new QRCode('qrcode'.$id);
+        // to save the code to file
+        $code->create(Yii::getPathOfAlias("webroot") . '/img/qrcode/barang_sewa/' . $id . '.png');
         $this->render('barcode', array(
          
             'id' => $id,

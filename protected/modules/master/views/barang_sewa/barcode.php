@@ -8,14 +8,7 @@ echo CHtml::image(Yii::app()->request->baseUrl.'/barcode/'.$id.'.jpg','',array()
     <?php for($i=0; $i<5; $i++) {?>
     <tr>
         <td>
-            <?php
-            $this->widget('application.extensions.qrcode.QRCodeGenerator',array(
-               'data' => 'qrcode'.$id,
-               'subfolderVar' => true,
-               'matrixPointSize' => 3,
-           )) 
-
-           ?>
+            <img height="80" src="<?=Yii::app()->request->baseUrl.'/img/qrcode/barang_sewa/'.$id.'.png'?>">
         </td>
         <td>
             <address style="margin: 2px 0px; font-size: 12px" class="align-left">

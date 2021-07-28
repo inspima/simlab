@@ -156,9 +156,7 @@ container {
 
                                     <br/>
                                     <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
+                                    <img width="100" src="<?php echo Yii::app()->createUrl('img/qrcode/registrasi/'.$id_registrasi.'.png'); ?>">
                                     <br/>
                                     <br/>
                                 <table>
