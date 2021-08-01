@@ -46,7 +46,7 @@
                                         <li><b style="color: blue">Kosongi kolom hasil dan keterangan jika pasien tersebut memang belum dilakukan pemeriksaan</b></li>
                                         <li><b>Save As</b> file</li>
                                         <li><b>Ubah file ke dalam format Excel 2003 (xls) seperti pada gambar dibawah ini</b><br/>
-                                            <img width="400" src="/img/tutorial/file-format-error-2.png">
+                                            <img width="400" src="<?php echo Yii::app()->baseUrl; ?>/img/tutorial/file-format-error-2.png">
                                         </li>
                                         <li>Upload ulang file yang di save</li>
                                         <li>Selesai</li>
