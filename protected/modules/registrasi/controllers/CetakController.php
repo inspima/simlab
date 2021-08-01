@@ -338,7 +338,7 @@
             $user_login = Yii::app()->db->createCommand("select * from pegawai where id_user='{$id_user_login}'")->queryRow();
             $user_pj = Yii::app()->db->createCommand("select * from pegawai where id_pegawai='73'")->queryRow();
             // QR CODE
-            $code=new QRCode(Yii::app()->params['host_registrasi'].'/validation-result/'.base64_encode(md5($sync_antrian['id_antrian_reg_pasien'])));
+            $code = new QRCode(Yii::app()->params['host_registrasi'] . '/validation-result/' . base64_encode(md5($id_registrasi)));
             // to save the code to file
             $code->create(Yii::getPathOfAlias("webroot") . '/img/qrcode/registrasi/' . $id_registrasi . '.png');
 
@@ -347,6 +347,7 @@
             $this->render('hasil_pemeriksaan_new', array(
                 'id_registrasi' => $id_registrasi,
                 'data_registrasi' => $data_registrasi,
+                'sync_antrian' => $sync_antrian,
                 'user_login' => $user_login,
                 'user_pj' => $user_pj,
                 'data_pemeriksaan' => $data_pasien_pemeriksaan

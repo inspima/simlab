@@ -75,7 +75,7 @@ include 'breadcumbs.php';
                                             <td><?php echo $dpp['nilai_normal'] ?></td>
                                             <td style="text-align: center">
                                                 Tanggal Pengujian <br/>
-                                                <input type="text" style="width: 90%"  class="tgl_pengujian" name="tgl_pengujian<?php echo $no ?>" value="<?php echo $dpp['tgl_pengujian'] == '' ? date('Y-m-d') : $dpp['tgl_selesai'] ?>"/>
+                                                <input type="text" style="width: 90%"  class="tgl_pengujian" name="tgl_pengujian<?php echo $no ?>" value="<?php echo $dpp['tgl_pengujian'] == '' ? date('Y-m-d') : $dpp['tgl_pengujian'] ?>"/>
                                                 <br/>
                                                 Tanggal Selesai  <br/>
                                                 <input type="text" style="width: 90%"  class="tgl_selesai" name="tgl_selesai<?php echo $no ?>" value="<?php echo $dpp['tgl_selesai'] == '' ? date('Y-m-d') : $dpp['tgl_selesai'] ?>"/>
