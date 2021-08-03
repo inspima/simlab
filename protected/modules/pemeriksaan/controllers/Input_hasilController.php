@@ -375,7 +375,7 @@
                 LEFT JOIN instansi i on i.id_instansi=rp.id_instansi
                 WHERE p.id_unit='{$id_unit}'
                 AND DATE_FORMAT(rp.waktu_registrasi,  '%Y-%m-%d') =  '$tgl'
-                order by rp.waktu_registrasi desc
+                order by rp.waktu_registrasi asc
             ";
             $data_pemeriksaan = Yii::app()->db->createCommand($query)->queryAll();
             foreach ($data_pemeriksaan as $d) {
