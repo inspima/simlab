@@ -360,19 +360,21 @@
             Yii::import('ext.phpexcel.JPhpExcel');
             $id_user_login = Yii::app()->user->getId();
             $id_unit = Yii::app()->request->getParam('id_unit');
+            $tgl = Yii::app()->request->getParam('tgl');
             $id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user_login}'")->queryScalar();
 
             $excel_data = [
                 1 => ['KODE PEMERIKSAAN', 'NO REGISTRASI', 'NAMA', 'ASAL', 'PENGUJIAN', 'HASIL', 'KETERANGAN']
             ];
             $query = "
-                SELECT pp.id_pasien_pemeriksaan,rp.no_registrasi,pas.nama,i.nama_instansi,p.nama_pengujian 
+                SELECT pp.id_pasien_pemeriksaan,rp.no_registrasi,pas.nama,i.nama_instansi,p.nama_pengujian,pp.hasil_pengujian,pp.keterangan_pemeriksaan 
                 FROM pasien_pemeriksaan pp 
                 JOIN pengujian p on p.id_pengujian=pp.id_pengujian
                 JOIN registrasi_pemeriksaan rp on rp.id_registrasi_pemeriksaan=pp.id_registrasi_pemeriksaan
                 JOIN pasien pas on pas.id_pasien=rp.id_pasien
                 LEFT JOIN instansi i on i.id_instansi=rp.id_instansi
-                WHERE p.id_unit='{$id_unit}' AND pp.hasil_pengujian is null
+                WHERE p.id_unit='{$id_unit}'
+                AND DATE_FORMAT(rp.waktu_registrasi,  '%Y-%m-%d') =  '$tgl'
                 order by rp.waktu_registrasi desc
             ";
             $data_pemeriksaan = Yii::app()->db->createCommand($query)->queryAll();
@@ -382,7 +384,9 @@
                     $d['no_registrasi'],
                     $d['nama'],
                     $d['nama_instansi'],
-                    $d['nama_pengujian']
+                    $d['nama_pengujian'],
+                    $d['hasil_pengujian'],
+                    $d['keterangan_pemeriksaan'],
                 ]);
             }
             $xls = new JPhpExcel('UTF-8', false, 'input-hasil');
@@ -397,10 +401,11 @@
             Yii::import('ext.phpexcelreader.JPhpExcelReader');
             $id_user_login = Yii::app()->user->getId();
             $id_unit = Yii::app()->request->getParam('id_unit');
+            $tgl = Yii::app()->request->getParam('tgl');
             $id_unit_user = !empty($id_unit) ? $id_unit : Yii::app()->db->createCommand("select id_unit from pegawai where id_user='{$id_user_login}'")->queryScalar();
             if (!empty($_POST)) {
                 try {
-                    $updated_data=0;
+                    $updated_data = 0;
                     $path = 'files/excel/input_hasil/upload/';
                     $file = CUploadedFile::getInstanceByName('exel_input');
                     $file_path = $path . $file;
@@ -417,8 +422,8 @@
                         $keterangan = $data->value($i, 7);
                         if (!empty($hasil)) {
                             $pasien_pemeriksaan = PasienPemeriksaan::model()->findByPk($id_pasien_pemeriksaan);
-                            if(!empty($pasien_pemeriksaan)&&empty($pasien_pemeriksaan->hasil_pengujian)){
-                                $id_registrasi=$pasien_pemeriksaan->id_registrasi_pemeriksaan;
+                            if (!empty($pasien_pemeriksaan) && empty($pasien_pemeriksaan->hasil_pengujian)) {
+                                $id_registrasi = $pasien_pemeriksaan->id_registrasi_pemeriksaan;
                                 $pasien_pemeriksaan->id_petugas_pemeriksa = $id_user_login;
                                 $pasien_pemeriksaan->hasil_pengujian = $hasil;
                                 $pasien_pemeriksaan->tgl_pengujian = date('Y-m-d');
@@ -449,15 +454,15 @@
                                 }
                                 $pasien_pemeriksaan->jumlah_save = $pasien_pemeriksaan->jumlah_save + 1;
                                 $pasien_pemeriksaan->save();
-                                $registrasi=RegistrasiPemeriksaan::model()->findByPk($id_registrasi);
-                                $registrasi->status_registrasi=1;
+                                $registrasi = RegistrasiPemeriksaan::model()->findByPk($id_registrasi);
+                                $registrasi->status_registrasi = 1;
                                 $registrasi->save();
                                 $updated_data++;
                             }
 
                         }
                     }
-                    Yii::app()->user->setFlash('success', 'Data berhasil simpan. Jumlah data yang di update '.$updated_data.' pasien');
+                    Yii::app()->user->setFlash('success', 'Data berhasil simpan. Jumlah data yang di update ' . $updated_data . ' pasien');
                 } catch (Exception $e) {
                     Yii::app()->user->setFlash('error', 'Terjadi kesalahan file tidak dapat terbaca/upload gagal');
                 }
@@ -467,6 +472,7 @@
             $this->render('excel', array(
                 'id_unit' => $id_unit,
                 'id_unit_user' => $id_unit_user,
+                'tgl' => $tgl,
                 'unit' => Unit::model()->findByPk($id_unit)
             ));
         }

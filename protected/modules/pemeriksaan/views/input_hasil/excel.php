@@ -35,15 +35,18 @@
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" style="font-size: 1.3em" data-parent="#accordion" href="#collapseOne">
-                                    Mohon dipahami aturan dalam proses upload file agar
+                                    Mohon dipahami aturan dalam proses upload file agar proses berjalan dengan lancar
                                 </a>
                             </div>
                             <div id="collapseOne" class="accordion-body in" style="height: auto;">
                                 <div class="accordion-inner">
                                     <ol>
                                         <li>Download template pada link yang disediakan</li>
-                                        <li>Silahkan isi kolom hasil dan keterangan (<b style="color: red">Mohon tidak mengubah/menghapus struktur dan urutan kolom</b>)</li>
-                                        <li><b style="color: blue">Kosongi kolom hasil dan keterangan jika pasien tersebut memang belum dilakukan pemeriksaan</b></li>
+                                        <li>Silahkan isi kolom hasil dan keterangan (<b style="color: red">Mohon tidak mengubah/menghapus struktur dan urutan kolom</b>)
+                                        </li>
+                                        <li>
+                                            <b style="color: blue">Kosongi kolom hasil dan keterangan jika pasien tersebut memang belum dilakukan pemeriksaan</b>
+                                        </li>
                                         <li><b>Save As</b> file</li>
                                         <li><b>Ubah file ke dalam format Excel 2003 (xls) seperti pada gambar dibawah ini</b><br/>
                                             <img width="400" src="<?php echo Yii::app()->baseUrl; ?>/img/tutorial/file-format-error-2.png">
@@ -56,26 +59,56 @@
                         </div>
                     </div>
                 </div>
+                <h3>Form Upload</h3>
                 <hr style="border-top: 1px dotted grey;"/>
                 <form class="form-horizontal form-validation" method="post" style="width: 98%;margin: 10px" enctype="multipart/form-data">
                     <fieldset>
                         <div class="control-group">
-                            <label class="control-label" for="template">Template</label>
+                            <label class="control-label" for="unit">Unit</label>
                             <div class="controls">
-                                <a target="_blank" href="<?php echo Yii::app()->createUrl('pemeriksaan/input_hasil/template_excel?id_unit=' . $id_unit); ?>" class="btn btn-success">Download File</a>
+                                <?= $unit['nama_unit'] ?>
                             </div> <!-- /controls -->
                         </div> <!-- /control-group -->
                         <div class="control-group">
-                            <label class="control-label" for="file">Upload File</label>
+                            <label class="control-label" for="tgl">Tgl</label>
                             <div class="controls">
-                                <input type="file" class="form-control" required name="exel_input">
+                                <input type="text" id="tgl" class="span2 validate[required]" name="tgl" value="<?= $tgl; ?>">
                             </div> <!-- /controls -->
                         </div> <!-- /control-group -->
+                        <?php
+                            if (!empty($tgl)) {
+                                ?>
+                                <div class="control-group">
+                                    <label class="control-label" for="template">Template</label>
+                                    <div class="controls">
+                                        <a target="_blank" href="<?php echo Yii::app()->createUrl('pemeriksaan/input_hasil/template_excel?id_unit=' . $id_unit.'&tgl='.$tgl); ?>" class="btn btn-success">Download File</a>
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+                                <div class="control-group">
+                                    <label class="control-label" for="file">Upload File</label>
+                                    <div class="controls">
+                                        <input type="file" class="form-control" required name="exel_input">
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
 
-                        <div class="form-actions">
-                            <input type="hidden" name="mode" value="pasien_pemeriksaan"/>
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div> <!-- /form-actions -->
+                                <div class="form-actions">
+                                    <input type="hidden" name="mode" value="pasien_pemeriksaan"/>
+                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                </div> <!-- /form-actions -->
+                                <?php
+                            } else {
+                                ?>
+                                <div class="control-group">
+                                    <label class="control-label" for="file"></label>
+                                    <div class="controls">
+                                        <span class="alert alert-info">Silahkan pilih tanggal</span>
+                                    </div> <!-- /controls -->
+                                </div
+
+                                <?php
+                            }
+                        ?>
+
                     </fieldset>
                 </form>
 
@@ -91,8 +124,16 @@
         $('table.datatable').dataTable({
             "lengthChange": true,
         });
-        $('.tgl_selesai, .tgl_pengujian').datepicker({
-            format: 'yyyy-mm-dd'
+        $('#tgl').datepicker({
+            format: 'yyyy-mm-dd',
+        }).on('changeDate', function (ev) {
+            $(this).change();
+        });
+        ;
+        $('#tgl').change(function () {
+            if ($(this).val() != null) {
+                window.location = window.location.href + '&tgl=' + $(this).val();
+            }
         });
     });
 </script>
