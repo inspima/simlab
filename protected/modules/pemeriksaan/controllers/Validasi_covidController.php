@@ -134,7 +134,7 @@ class Validasi_covidController extends Controller {
                     LEFT JOIN pasien_pemeriksaan c ON a.id_registrasi_pasien_sample =c.id_registrasi_pemeriksaan".$q_nama." 
                     ".$q_tgl_1."
                     GROUP BY
-                            a.id_registrasi_pemeriksaan
+                            a.id_registrasi_pemeriksaan,a.jumlah_sample
             ) e ON e.id_registrasi_pemeriksaan = b.id_registrasi_pemeriksaan
             WHERE
                     a.id_pengujian = '583'

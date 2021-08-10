@@ -61,9 +61,15 @@ AND DATE_FORMAT(
 ) <= '$end'
 ". $q_unit ."
 GROUP BY
-	f.id_sample,
-	d.id_pengujian,
-	g.id_instansi
+	d.nama_pengujian, 
+	pp.status_pembayaran,
+	c.no_registrasi,
+	pp.total_dibayar,
+	pp.waktu_pembayaran,
+	f.nama_sample,
+	g.nama_instansi,
+	h.nama_unit,
+	b.besar_tarif
 ORDER BY
 	pp.waktu_pembayaran";
     $data = Yii::app()->db->createCommand($query)->queryAll();

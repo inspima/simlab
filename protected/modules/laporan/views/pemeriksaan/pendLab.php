@@ -16,7 +16,7 @@ function getData($begin, $end){
             LEFT JOIN dokter e ON a.id_dokter_pengirim = e.id_dokter
             WHERE DATE_FORMAT(b.waktu_pembayaran, '%Y-%m-%d') <= '$end'
             AND DATE_FORMAT(b.waktu_pembayaran, '%Y-%m-%d') >= '$begin' 
-            GROUP BY a.id_registrasi_pemeriksaan";
+            GROUP BY a.id_registrasi_pemeriksaan, a.no_registrasi, a.waktu_registrasi, c.nama,b.total_biaya,b.total_dibayar,nama_instansi, e.nama_dokter, a.id_pasien ";
     $data = Yii::app()->db->createCommand($query)->queryAll();
     return $data;
 }
