@@ -203,8 +203,11 @@
         public function actionPflBulanan()
         {
             $this->layout = 'wide_main';
-            $query_bulan = "SELECT DISTINCT DATE_FORMAT(a.tgl_order_masuk,'%Y-%m') as BLN
-                       FROM registrasi_penyewaan a ORDER BY tgl_order_masuk DESC";
+            $query_bulan = "
+                SELECT DISTINCT DATE_FORMAT(a.tgl_order_masuk,'%Y-%m') as BLN
+                FROM registrasi_penyewaan a 
+                GROUP BY tgl_order_masuk 
+                ORDER BY BLN DESC";
             $bulan = Yii::app()->db->createCommand($query_bulan)->queryAll();
             $pil_bulan = Yii::app()->request->getPost('bulan');
             $jenis_tampilan = Yii::app()->request->getParam('jenis_tampilan');

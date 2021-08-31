@@ -1,10 +1,11 @@
 <?php
-// change the following paths if necessary
-$yii=dirname(__FILE__).'/system/yii.php';
-$config=dirname(__FILE__).'/protected/config/main.php';
+    // change the following paths if necessary
+    $yii = dirname(__FILE__) . '/system/yii.php';
+    $config = dirname(__FILE__) . '/protected/config/main.php';
+    error_reporting(E_ALL ^ ( E_NOTICE | E_WARNING | E_DEPRECATED ));
 
-// remove the following line when in production mode
-// defined('YII_DEBUG') or define('YII_DEBUG',true);
+    // remove the following line when in production mode
+    // defined('YII_DEBUG') or define('YII_DEBUG',true);
 
-require_once($yii);
-Yii::createWebApplication($config)->run();
+    require_once($yii);
+    Yii::createWebApplication($config)->run();
