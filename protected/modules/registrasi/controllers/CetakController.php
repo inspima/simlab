@@ -304,6 +304,7 @@
 
         public function actionHasil_pemeriksaan()
         {
+            Yii::import('ext.qrcode.QRCode');
             $this->layout = 'wide_main';
             $id_registrasi = Yii::app()->request->getParam('reg');
             $id_user_login = Yii::app()->user->getId();
@@ -312,6 +313,11 @@
             $q_unit = $id_unit != '' ? "and id_unit='{$id_unit}'" : "";
             $user_login = Yii::app()->db->createCommand("select * from pegawai where id_user='{$id_user_login}'")->queryRow();
             $user_pj = Yii::app()->db->createCommand("select * from pegawai where id_pegawai='73'")->queryRow();
+            // QR CODE
+            $code = new QRCode(Yii::app()->params['host_registrasi'] . '/validation-result/' . base64_encode(md5($id_registrasi)));
+            // to save the code to file
+            $code->create(Yii::getPathOfAlias("webroot") . '/img/qrcode/registrasi/' . $id_registrasi . '.png');
+
 
             $data_pasien_pemeriksaan = $this->getPasienPemeriksanValidasi($id_registrasi);
             $data_registrasi = $this->getDataRegistrasiPemeriksaan($id_registrasi);

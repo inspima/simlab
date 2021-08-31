@@ -162,9 +162,8 @@
 
                                     <br/>
                                     <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
+                                    <img width="100" src="<?php echo Yii::app()->createUrl('img/qrcode/registrasi/'.$id_registrasi.'.png'); ?>">
+
                                     <br/>
                                     <br/>
                                     Dicetak Oleh :(<?php echo $user_login['nama_pegawai'] ?>)<br/>
