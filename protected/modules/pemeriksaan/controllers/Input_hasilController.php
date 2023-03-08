@@ -152,9 +152,7 @@
                     GROUP BY
                         id_registrasi_pemeriksaan 
                     ORDER BY
-                        id_registrasi_pemeriksaan DESC 
-                        LIMIT {$start},
-                        {$length} 
+                        id_registrasi_pemeriksaan DESC
                         ) 
                 AS pemp ON pemp.id_registrasi_pemeriksaan = r.id_registrasi_pemeriksaan
             where lower(r.no_registrasi) like lower('%{$search}%') 

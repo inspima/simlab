@@ -27,6 +27,10 @@ include 'breadcumbs.php';
                                             ?>
                                             <option value="<?php echo $d['id_unit'] ?>" <?php if($id_unit == $d['id_unit']){echo "selected='true'";} ?>><?php echo $d['nama_unit'] ?></option>
                                             <?php
+                                        }else if ($id_unit_user == $d['id_unit']) {
+                                            ?>
+                                            <option value="<?php echo $d['id_unit'] ?>" <?php if($id_unit == $d['id_unit']){echo "selected='true'";} ?>><?php echo $d['nama_unit'] ?></option>
+                                            <?php
                                         }
                                     }
 
